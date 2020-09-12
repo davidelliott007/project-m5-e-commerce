@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
 import GlobalStyles from "./styles/GlobalStyles";
+import Header from '../components/header/header';
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
       {
         //this is where the header component will be placed
       }
+      <Header />
       <Switch>
         <Route exact path="/">
           {
@@ -24,7 +25,6 @@ function App() {
         </Route>
       </Switch>
     </Router>
-
   );
 }
 
