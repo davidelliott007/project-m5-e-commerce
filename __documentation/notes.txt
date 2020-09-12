@@ -1,0 +1,45 @@
+front end with require data
+
+Are we expected to use Mongo on this project?
+
+Sate of the project?
+Stateless?
+
+Pagination with item requests
+10 items per page
+the google way
+1 to click
+
+Home page
+Second page has the header
+
+Indivial itmes
+same header
+Link to go back previous listing
+
+Cart
+View
+Look like the homepage
+Cart with the items selected
+Cart
+
+Buttons to remove itmes and increment and decremet
+Cart as modal?
+Parked question - modal as cart?
+Cart contains continue shopping link
+Shop by Category
+Body Part? or
+Like Simon’s homepage
+
+Focus on accessibility.
+
+Search is a stretch goal.
+Our first stretch goal.
+
+Search Modal? - Nice to have?
+
+Let’s write the BackEnd part.
+Main get route
+One get for all the data.
+Massive blob array.
+Friday easily.
