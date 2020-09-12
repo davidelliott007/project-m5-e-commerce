@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
 import GlobalStyles from "./styles/GlobalStyles";
-import Header from '../components/header/header';
+import Header from "../components/header/header";
+import Cart from "../components/Cart/Cart";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           {
             //this is where the feed component will be placed
           }
-          <div>test</div>
+          <Cart></Cart>
         </Route>
         <Route path="/item/:itemID">
           <div>item</div>
