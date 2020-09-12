@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { COLORS } from './Colors';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -22,6 +23,8 @@ time, mark, audio, video {
 	font-size: 100%;
 	vertical-align: baseline;
     font-family: 'Montserrat', sans-serif;
+	background-color: ${COLORS.BACKGROUND.PRIMARY};
+	background-repeat: no-repeat;
 
 }
 /* HTML5 display-role reset for older browsers */

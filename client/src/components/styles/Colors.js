@@ -16,6 +16,10 @@ export const COLORS = {
         SECONDARY: '#50248F',
         // Darker
         TERTIARY: '#230051',
+    },
+
+    BACKGROUND: {
+        PRIMARY: '#EBF5FA',
     }
     
 }
