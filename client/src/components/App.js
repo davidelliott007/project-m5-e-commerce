@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
@@ -23,7 +24,13 @@ function App() {
         </Route>
       </Switch>
     </Router>
+
   );
 }
+
+const Test = styled.p`
+  color: ${COLORS.PURPLE.PRIMARY};
+  font-size: 100px;
+`;
 
 export default App;
