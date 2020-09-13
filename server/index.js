@@ -21,6 +21,8 @@ const {
   renderOnlyOutOfStockByBodyType,
   renderOnlyInStockCategory,
   renderOnlyOutOfStockCategory,
+  renderItemsByCompanyID,
+  renderItemsByCompanyName,
 } = require("./byStock.js");
 
 const { renderBodyTypes } = require("./bodyTypes.js");
@@ -70,6 +72,9 @@ express()
   .get("/bodyTypes", renderBodyTypes)
 
   .get("/companies", renderCompanies)
+
+  .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
+  .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)

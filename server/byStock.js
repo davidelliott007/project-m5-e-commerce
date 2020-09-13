@@ -257,6 +257,96 @@ const renderOnlyOutOfStockCategory = async (req, res) => {
   }
 };
 
+const renderItemsByCompanyID = async (req, res) => {
+  try {
+    const { companyID } = req.params;
+
+    let companyIDNum = parseInt(companyID);
+
+    const items_data = await openFilePromise("./data/items.json");
+    const companies_data = await openFilePromise("./data/companies.json");
+
+    let companies = JSON.parse(companies_data);
+
+    let companyByID = companies.filter(
+      (company) => company._id === companyIDNum
+    );
+
+    let items = JSON.parse(items_data);
+
+    console.log(companyID);
+    console.log(companyID);
+
+    let itemsForCompany = items.filter(
+      (item) => item.companyId === companyIDNum
+    );
+
+    if (companyByID.length > 0) {
+      let returned_company = companyByID[0];
+      res.status(200).json({ returned_company, itemsForCompany });
+    } else {
+      let no_company_found_obj = { message: "no company found" };
+      res.status(200).json({ no_company_found_obj, itemsForCompany });
+    }
+  } catch (e) {
+    console.error(e.code);
+
+    if (e.code === "ENOENT") {
+      let return_error_object = {
+        ...e,
+        messgae: "couldn't find the json file",
+      };
+      res.status(404).json(return_error_object);
+    } else {
+      res.status(404).json(e);
+    }
+  }
+};
+
+const renderItemsByCompanyName = async (req, res) => {
+  try {
+    const { companyName } = req.params;
+
+    const items_data = await openFilePromise("./data/items.json");
+    const companies_data = await openFilePromise("./data/companies.json");
+
+    let companies = JSON.parse(companies_data);
+
+    let items = JSON.parse(items_data);
+
+    let companyByName = companies.filter(
+      (company) => company.name.toLowerCase() === companyName.toLowerCase()
+    );
+
+    if (companyByName.length > 0) {
+      let returned_company = companyByName[0];
+
+      let itemsForCompany = items.filter(
+        (item) => item.companyId === returned_company._id
+      );
+
+      res.status(200).json({ returned_company, itemsForCompany });
+    } else {
+      let returned_company = companyByName[0];
+
+      let no_company_found_obj = { message: "no company found" };
+      res.status(200).json({ no_company_found_obj, itemsForCompany });
+    }
+  } catch (e) {
+    console.error(e.code);
+
+    if (e.code === "ENOENT") {
+      let return_error_object = {
+        ...e,
+        messgae: "couldn't find the json file",
+      };
+      res.status(404).json(return_error_object);
+    } else {
+      res.status(404).json(e);
+    }
+  }
+};
+
 module.exports = {
   renderOnlyInStock,
   renderOnlyOutOfStock,
@@ -264,4 +354,6 @@ module.exports = {
   renderOnlyOutOfStockByBodyType,
   renderOnlyInStockCategory,
   renderOnlyOutOfStockCategory,
+  renderItemsByCompanyID,
+  renderItemsByCompanyName,
 };
