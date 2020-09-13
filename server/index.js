@@ -3,6 +3,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const { renderBigData, baconEndPoint } = require("./bigData.js");
+
 // our first change!!!!
 let dave = "dave";
 
@@ -26,7 +28,11 @@ express()
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
 
+  // .get("/dave", handleBigDataObjectReq)
+  .get("/bigData", renderBigData)
+  .get("/onlyInStock", renderBigData)
+
   // REST endpoints?
-  .get("/bacon", (req, res) => res.status(200).json("🥓"))
+  .get("/bacon", baconEndPoint)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
