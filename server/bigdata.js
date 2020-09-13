@@ -1,7 +1,3 @@
-// const handleBigDataObjectReq = (req, res) => {
-//   res.status(404).send("I couldn't find what you're looking for.");
-// };
-
 const { openFilePromise } = require("./filelibs.js");
 const fs = require("fs");
 
@@ -126,6 +122,7 @@ const renderBigDataCategoryAlpha = async (req, res) => {
 
     categories.sort();
 
+    console.log(categories);
     // now that we have all our body types in a nice array, go through each and pull out all the items with that type of body_type, then add it an object keyed with that body_type, and push to a master collection
 
     let collected_by_category = [];
@@ -134,7 +131,7 @@ const renderBigDataCategoryAlpha = async (req, res) => {
         (item) => item.category === category_type_item
       );
       let category_obj = { [category_type_item]: by_category_items };
-      collected_by_category.push(body_obj);
+      collected_by_category.push(category_obj);
     });
 
     console.log(collected_by_category[0]);

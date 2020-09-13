@@ -3,6 +3,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+
+// this is where you will get the whole big data blob
 const {
   renderBigData,
   renderBigDataAlphabeticalItems,
@@ -10,13 +12,20 @@ const {
   renderBigDataCategoryAlpha,
   baconEndPoint,
 } = require("./bigData.js");
+
+// this is where you will get just items, sorted by various
 const {
   renderOnlyInStock,
   renderOnlyOutOfStock,
   renderOnlyInStockByBodyType,
   renderOnlyOutOfStockByBodyType,
+  renderOnlyInStockCategory,
+  renderOnlyOutOfStockCategory,
 } = require("./byStock.js");
 
+const { renderBodyTypes } = require("./bodyTypes.js");
+
+const { renderCompanies } = require("./companies.js");
 // our first change!!!!
 let dave = "dave";
 
@@ -43,25 +52,24 @@ express()
   // .get("/dave", handleBigDataObjectReq)
   .get("/bigData", renderBigData)
   .get("/bigData/alphabeticalItems", renderBigDataAlphabeticalItems)
-  //TODO
   .get("/bigData/itemsByBodyType", renderBigDataByBodyTypeAlpha)
-  //TODO
   .get("/bigData/itemsByPrice", renderBigDataAlphabeticalItems)
   .get("/bigData/itemsByCategory", renderBigDataCategoryAlpha)
 
   .get("/onlyInStock", renderOnlyInStock)
   .get("/onlyOutOfStock", renderOnlyOutOfStock)
 
-  //TODO
   .get("/onlyInStock/alphabeticalItems", renderOnlyInStock)
   .get("/onlyInStock/byBodyType", renderOnlyInStockByBodyType)
-  // .get("/onlyInStock/byCategory", renderOnlyInStockByBodyType)
+  .get("/onlyInStock/byCategory", renderOnlyInStockCategory)
 
   .get("/onlyOutOfStock/alphabeticalItems", renderOnlyOutOfStock)
   .get("/onlyOutOfStock/byBodyType", renderOnlyOutOfStockByBodyType)
+  .get("/onlyOutOfStock/byCategory", renderOnlyOutOfStockCategory)
 
-  //TODO
-  // .get("/BodyTypes", renderBodyTypes)
+  .get("/bodyTypes", renderBodyTypes)
+
+  .get("/companies", renderCompanies)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)
