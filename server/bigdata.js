@@ -11,7 +11,7 @@ const renderBigData = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(companies_data);
+    let items = JSON.parse(items_data);
 
     res.status(200).json({ companies, items });
   } catch (e) {
