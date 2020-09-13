@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
 import GlobalStyles from "./styles/GlobalStyles";
 import Header from '../components/header/header';
+import Homepage from './homepage/Homepage';
 
 function App() {
   return (
@@ -17,8 +18,10 @@ function App() {
         <Route exact path="/">
           {
             //this is where the feed component will be placed
+            // Homepage is the feed component, placeholders where items will be
           }
-          <div>test</div>
+          
+          <Homepage />
         </Route>
         <Route path="/item/:itemID">
           <div>item</div>
