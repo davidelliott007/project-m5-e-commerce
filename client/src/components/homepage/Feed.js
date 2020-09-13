@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
+import { FaCartPlus } from "react-icons/fa"
 
 export const Feed = () => {
     // This is simply Test data, will be replace by a fetch to GET endpoint
@@ -39,12 +40,17 @@ export const Feed = () => {
 
         <Location>{item.body_location} - </Location>
         <Category>{item.category}</Category>
-
+        <StockCont>
         <Stock>
             {/* If Stock is 0, it will simply display 'Out Of Stock */}
           {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
           {item.numInStock > 0 ? " Left in Stock!" : null}
+          
         </Stock>
+        {/* Add to cart button wont display if out off stock */}
+        {item.numInStock > 0 ? <FaCartPlus size={20} /> : null}
+        </StockCont>
+
       </Li>
     );
   });
@@ -64,9 +70,14 @@ const Name = styled.p`
 
 const Price = styled.p`
   font-weight: bold;
+  color: ${COLORS.BLUE.PRIMARY};
+
 `;
 
-const Location = styled.span``;
+const Location = styled.span`
+  color: ${COLORS.BLUE.PRIMARY};
+
+`;
 
 const Img = styled.img`
   border-radius: 15px;
@@ -74,7 +85,21 @@ const Img = styled.img`
   margin: 5px;
 `;
 
-const Category = styled.span``;
+
+
+const Category = styled.span`
+  color: ${COLORS.BLUE.PRIMARY};
+
+`;
+
+const StockCont = styled.div`
+  display: flex;
+  flex-direction: row;
+  color: ${COLORS.BLUE.PRIMARY};
+  align-items: center;
+  justify-content: center;
+
+`;
 
 const Stock = styled.p`
   font-style: italic;
