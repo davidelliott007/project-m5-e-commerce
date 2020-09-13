@@ -7,9 +7,15 @@ const {
   renderBigData,
   renderBigDataAlphabeticalItems,
   renderBigDataByBodyTypeAlpha,
+  renderBigDataCategoryAlpha,
   baconEndPoint,
 } = require("./bigData.js");
-const { renderOnlyInStock, renderOnlyOutOfStock } = require("./byStock.js");
+const {
+  renderOnlyInStock,
+  renderOnlyOutOfStock,
+  renderOnlyInStockByBodyType,
+  renderOnlyOutOfStockByBodyType,
+} = require("./byStock.js");
 
 // our first change!!!!
 let dave = "dave";
@@ -41,13 +47,21 @@ express()
   .get("/bigData/itemsByBodyType", renderBigDataByBodyTypeAlpha)
   //TODO
   .get("/bigData/itemsByPrice", renderBigDataAlphabeticalItems)
+  .get("/bigData/itemsByCategory", renderBigDataCategoryAlpha)
 
   .get("/onlyInStock", renderOnlyInStock)
   .get("/onlyOutOfStock", renderOnlyOutOfStock)
 
   //TODO
   .get("/onlyInStock/alphabeticalItems", renderOnlyInStock)
+  .get("/onlyInStock/byBodyType", renderOnlyInStockByBodyType)
+  // .get("/onlyInStock/byCategory", renderOnlyInStockByBodyType)
+
   .get("/onlyOutOfStock/alphabeticalItems", renderOnlyOutOfStock)
+  .get("/onlyOutOfStock/byBodyType", renderOnlyOutOfStockByBodyType)
+
+  //TODO
+  // .get("/BodyTypes", renderBodyTypes)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)
