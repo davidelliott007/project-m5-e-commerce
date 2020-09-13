@@ -3,7 +3,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const { renderBigData, baconEndPoint } = require("./bigData.js");
+const {
+  renderBigData,
+  renderBigDataAlphabeticalItems,
+  renderBigDataByBodyTypeAlpha,
+  baconEndPoint,
+} = require("./bigData.js");
+const { renderOnlyInStock, renderOnlyOutOfStock } = require("./byStock.js");
 
 // our first change!!!!
 let dave = "dave";
@@ -30,7 +36,18 @@ express()
 
   // .get("/dave", handleBigDataObjectReq)
   .get("/bigData", renderBigData)
-  .get("/onlyInStock", renderBigData)
+  .get("/bigData/alphabeticalItems", renderBigDataAlphabeticalItems)
+  //TODO
+  .get("/bigData/itemsByBodyType", renderBigDataByBodyTypeAlpha)
+  //TODO
+  .get("/bigData/itemsByPrice", renderBigDataAlphabeticalItems)
+
+  .get("/onlyInStock", renderOnlyInStock)
+  .get("/onlyOutOfStock", renderOnlyOutOfStock)
+
+  //TODO
+  .get("/onlyInStock/alphabeticalItems", renderOnlyInStock)
+  .get("/onlyOutOfStock/alphabeticalItems", renderOnlyOutOfStock)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)
