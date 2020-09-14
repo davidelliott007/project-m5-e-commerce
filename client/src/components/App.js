@@ -3,8 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
 import GlobalStyles from "./styles/GlobalStyles";
+<<<<<<< HEAD
 import Header from "../components/header/header";
 import Cart from "../components/Cart/Cart";
+=======
+import Header from '../components/header/header';
+import Homepage from './homepage/Homepage';
+>>>>>>> master
 
 function App() {
   return (
@@ -18,8 +23,14 @@ function App() {
         <Route exact path="/">
           {
             //this is where the feed component will be placed
+            // Homepage is the feed component, placeholders where items will be
           }
+<<<<<<< HEAD
           <Cart></Cart>
+=======
+          
+          <Homepage />
+>>>>>>> master
         </Route>
         <Route path="/item/:itemID">
           <div>item</div>
