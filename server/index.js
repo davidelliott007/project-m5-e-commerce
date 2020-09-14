@@ -3,6 +3,31 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+
+// this is where you will get the whole big data blob
+const {
+  renderBigData,
+  renderBigDataAlphabeticalItems,
+  renderBigDataByBodyTypeAlpha,
+  renderBigDataCategoryAlpha,
+  baconEndPoint,
+} = require("./bigData.js");
+
+// this is where you will get just items, sorted by various
+const {
+  renderOnlyInStock,
+  renderOnlyOutOfStock,
+  renderOnlyInStockByBodyType,
+  renderOnlyOutOfStockByBodyType,
+  renderOnlyInStockCategory,
+  renderOnlyOutOfStockCategory,
+  renderItemsByCompanyID,
+  renderItemsByCompanyName,
+} = require("./byStock.js");
+
+const { renderBodyTypes } = require("./bodyTypes.js");
+
+const { renderCompanies } = require("./companies.js");
 // our first change!!!!
 let dave = "dave";
 
@@ -26,7 +51,32 @@ express()
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
 
+  // .get("/dave", handleBigDataObjectReq)
+  .get("/bigData", renderBigData)
+  .get("/bigData/alphabeticalItems", renderBigDataAlphabeticalItems)
+  .get("/bigData/itemsByBodyType", renderBigDataByBodyTypeAlpha)
+  .get("/bigData/itemsByPrice", renderBigDataAlphabeticalItems)
+  .get("/bigData/itemsByCategory", renderBigDataCategoryAlpha)
+
+  .get("/onlyInStock", renderOnlyInStock)
+  .get("/onlyOutOfStock", renderOnlyOutOfStock)
+
+  .get("/onlyInStock/alphabeticalItems", renderOnlyInStock)
+  .get("/onlyInStock/byBodyType", renderOnlyInStockByBodyType)
+  .get("/onlyInStock/byCategory", renderOnlyInStockCategory)
+
+  .get("/onlyOutOfStock/alphabeticalItems", renderOnlyOutOfStock)
+  .get("/onlyOutOfStock/byBodyType", renderOnlyOutOfStockByBodyType)
+  .get("/onlyOutOfStock/byCategory", renderOnlyOutOfStockCategory)
+
+  .get("/bodyTypes", renderBodyTypes)
+
+  .get("/companies", renderCompanies)
+
+  .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
+  .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
+
   // REST endpoints?
-  .get("/bacon", (req, res) => res.status(200).json("🥓"))
+  .get("/bacon", baconEndPoint)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
