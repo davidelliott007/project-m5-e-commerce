@@ -16,7 +16,7 @@ const Header = () => {
     <Wrapper>
       <Logo src={logo} />
       <Nav>
-        <A href="#">
+        <A to="/">
           <ImgLogo src={imgLogo} />
         </A>
         <A href="#" /* onClick to do some searching */>
@@ -24,6 +24,7 @@ const Header = () => {
         </A>
         <A to="/cart" /* onClick to go to cart / cart modal */>
           <FaShoppingCart size={35} />
+
         </A>
       </Nav>
     </Wrapper>
