@@ -9,6 +9,8 @@ import imgLogo from "../../public/IMG_Logo.png";
 import { BiSearchAlt } from "react-icons/bi";
 // import { FaShoppingCart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+
+import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <Wrapper>
@@ -20,7 +22,7 @@ const Header = () => {
         <A href="#" /* onClick to do some searching */>
           <BiSearchAlt size={35} />
         </A>
-        <A href="#" /* onClick to go to cart / cart modal */>
+        <A to="/cart" /* onClick to go to cart / cart modal */>
           <FaShoppingCart size={35} />
         </A>
       </Nav>
@@ -45,7 +47,7 @@ const Nav = styled.nav`
   justify-content: space-evenly;
 `;
 
-const A = styled.a`
+const A = styled(Link)`
   color: ${COLORS.PURPLE.PRIMARY};
 `;
 
