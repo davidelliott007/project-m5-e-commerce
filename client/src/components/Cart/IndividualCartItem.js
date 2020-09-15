@@ -7,6 +7,9 @@ import { removeItem, updateQuantity } from "../../actions";
 
 const IndividualCartItem = ({ item }) => {
   const dispatch = useDispatch();
+  let quantity = item.quantity;
+
+  let subTotal = item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
   return (
     <ItemContainer>
       <ItemWrapper>
@@ -20,9 +23,15 @@ const IndividualCartItem = ({ item }) => {
           </div>
           <Price>CAN{item.price}</Price>
           <InputSection>
-            <Input value={1}></Input>
+            <Input
+              type="number"
+              value={quantity}
+              onChange={(ev) => {
+                dispatch(updateQuantity(item._id, ev.target.value));
+              }}
+            ></Input>
             <SubTotal>
-              SUBTOTAL:<SubTotalAmount>Can {item.price}</SubTotalAmount>
+              SUBTOTAL:<SubTotalAmount>Can ${subTotal}</SubTotalAmount>
             </SubTotal>
           </InputSection>
         </ItemDetails>

@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
-
+//Mae's Temp Code
+import { useDispatch } from "react-redux";
+import { addItem } from "../../actions";
 export const Feed = () => {
-    // This is simply Test data, will be replace by a fetch to GET endpoint
+  // This is simply Test data, will be replace by a fetch to GET endpoint
+  //Mae's Temp Code
+  const dispatch = useDispatch();
   const data = [
     {
       name: "Barska GB12166 Fitness Watch with Heart Rate Monitor",
@@ -41,10 +45,18 @@ export const Feed = () => {
         <Category>{item.category}</Category>
 
         <Stock>
-            {/* If Stock is 0, it will simply display 'Out Of Stock */}
+          {/* If Stock is 0, it will simply display 'Out Of Stock */}
           {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
           {item.numInStock > 0 ? " Left in Stock!" : null}
         </Stock>
+        {/* Mae's Temp Code */}
+        <button
+          onClick={() => {
+            dispatch(addItem(item));
+          }}
+        >
+          Purchase
+        </button>
       </Li>
     );
   });
@@ -59,7 +71,6 @@ const Name = styled.p`
   font-weight: bold;
   margin-top: 10px;
   margin-top: 8px;
-
 `;
 
 const Price = styled.p`

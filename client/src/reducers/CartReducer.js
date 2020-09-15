@@ -28,7 +28,7 @@ export default function cartReducer(state = initialState, action) {
 
     case "UPDATE_QUANTITY": {
       return produce(state, (draftState) => {
-        draftState[action._id].quantity = action.newQuantity;
+        draftState[action.id].quantity = action.newQuantity;
         return draftState;
       });
     }
