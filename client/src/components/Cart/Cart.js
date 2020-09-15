@@ -1,11 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import IndividualCartItem from "./IndividualCartItem";
+import { useSelector } from "react-redux";
+import { getStoreItemArray } from "../../reducers/CartReducer";
 
 const Cart = () => {
+  const storeItems = useSelector((state) => {
+    return Object.values(state.cart);
+  });
+  console.log(storeItems);
   return (
     <Wrapper>
-      <IndividualCartItem />
+      {storeItems.map((item) => {
+        return <IndividualCartItem item={item} />;
+      })}
     </Wrapper>
   );
 };

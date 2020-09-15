@@ -7,11 +7,11 @@ export default function cartReducer(state = initialState, action) {
     case "ADD_ITEM": {
       return {
         ...state,
-        [action.item.id]: {
+        [action.item._id]: {
           ...action.item,
           quantity:
-            state[action.item.id] && state[action.item.id].quantity
-              ? state[action.item.id].quantity + 1
+            state[action.item._id] && state[action.item._id].quantity
+              ? state[action.item._id].quantity + 1
               : 1,
         },
       };
@@ -19,13 +19,17 @@ export default function cartReducer(state = initialState, action) {
 
     case "REMOVE_ITEM": {
       return produce(state, (draftState) => {
+        console.log(action.id);
         delete draftState[action.id];
+
+        return draftState;
       });
     }
 
     case "UPDATE_QUANTITY": {
       return produce(state, (draftState) => {
-        draftState[action.id].quantity = action.newQuantity;
+        draftState[action._id].quantity = action.newQuantity;
+        return draftState;
       });
     }
 

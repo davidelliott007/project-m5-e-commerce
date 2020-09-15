@@ -5,6 +5,7 @@ import { COLORS } from "./styles/Colors";
 import GlobalStyles from "./styles/GlobalStyles";
 import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
+import Cart from "../components/Cart/Cart";
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route path="/item/:itemID">
           <div>item</div>
+        </Route>
+        <Route exact path="/cart">
+          <Cart />
         </Route>
       </Switch>
     </Router>
