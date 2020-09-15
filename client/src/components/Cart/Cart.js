@@ -13,6 +13,15 @@ const Cart = () => {
   storeItems.forEach((item) => {
     total += item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
   });
+  if (!total) {
+    return (
+      <EmptyWraper>
+        <Empty>
+          <p>Your cart is empty!</p>
+        </Empty>
+      </EmptyWraper>
+    )
+  }
   return (
     <Wrapper>
       {storeItems.map((item) => {
@@ -69,3 +78,23 @@ const PurchaseButton = styled.button`
   border: none;
   color: ${COLORS.BACKGROUND.PRIMARY};
 `;
+
+const EmptyWraper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 40px;
+  color: ${COLORS.PURPLE.PRIMARY};
+  font-size: 1.5em;
+  font-weight: 600;
+
+
+
+`;
+
+const Empty = styled.p`
+
+`;
+
+
