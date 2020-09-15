@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa"
+import { useDispatch } from "react-redux";
+import { addItem } from "../../actions";
+
 
 export const Feed = () => {
+  const dispatch = useDispatch();
+
   const [data, setData] = React.useState()
    
   React.useEffect(() => {
@@ -39,15 +44,21 @@ export const Feed = () => {
         <Category>{item.category}</Category>
         <StockCont>
         <Stock>
-            {/* If Stock is 0, it will simply display 'Out Of Stock */}
+          {/* If Stock is 0, it will simply display 'Out Of Stock */}
           {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
           {item.numInStock > 0 ? " Left in Stock!" : null}
           
         </Stock>
         {/* Add to cart button wont display if out off stock */}
-        {item.numInStock > 0 ? <FaCartPlus size={20} /> : null}
         </StockCont>
 
+        <button
+          onClick={() => {
+            dispatch(addItem(item));
+          }}
+        >
+          Purchase
+        </button>
       </Li>
     );
   });
@@ -63,7 +74,6 @@ const Name = styled.p`
   font-weight: bold;
   margin-top: 10px;
   margin-top: 8px;
-
 `;
 
 const Price = styled.p`
