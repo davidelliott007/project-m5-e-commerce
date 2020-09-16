@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { Link } from "react-router-dom";
@@ -6,8 +6,10 @@ import { useDispatch } from "react-redux";
 import { removeItem, updateQuantity } from "../../actions";
 
 const IndividualCartItem = ({ item }) => {
+  const [error, setError] = React.useState("");
   const dispatch = useDispatch();
   let quantity = item.quantity;
+  const deleteDom = useRef(null);
 
   let subTotal = item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
   return (
@@ -27,7 +29,27 @@ const IndividualCartItem = ({ item }) => {
               type="number"
               value={quantity}
               onChange={(ev) => {
-                dispatch(updateQuantity(item._id, ev.target.value));
+                console.log(ev.target.value);
+                if (
+                  (isNaN(parseInt(ev.target.value)) &&
+                    ev.target.value !== "") ||
+                  ev.target.value < 0 ||
+                  ev.target.value % 1 != 0 ||
+                  ev.target.value.includes("e")
+                ) {
+                  dispatch(updateQuantity(item._id, ""));
+                  setError("Please input a positive, whole number");
+                } else if (ev.target.value > item.numInStock) {
+                  dispatch(updateQuantity(item._id, item.numInStock));
+                  setError(`Only ${item.numInStock} left in stock`);
+                } else if (ev.target.value === "0") {
+                  dispatch(updateQuantity(item._id, ev.target.value));
+                  setError("To delete item, press DELETE button");
+                  deleteDom.current.focus();
+                } else {
+                  setError("");
+                  dispatch(updateQuantity(item._id, ev.target.value));
+                }
               }}
             ></Input>
             <SubTotal>
@@ -35,9 +57,11 @@ const IndividualCartItem = ({ item }) => {
               <SubTotalAmount>Can ${subTotal.toFixed(2)}</SubTotalAmount>
             </SubTotal>
           </InputSection>
+          {error == "" ? null : <Error>{error}</Error>}
         </ItemDetails>
       </ItemWrapper>
       <DeleteButton
+        ref={deleteDom}
         onClick={() => {
           dispatch(removeItem(item._id));
         }}
@@ -103,6 +127,10 @@ const Input = styled.input`
   height: 40px;
   border-radius: 5px;
   border: 1px solid ${COLORS.PURPLE.PRIMARY};
+`;
+
+const Error = styled.p`
+  color: red;
 `;
 
 const SubTotal = styled.div`
