@@ -4,6 +4,11 @@ import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../actions";
+<<<<<<< HEAD
+=======
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
+>>>>>>> parent/master
 
 export const Feed = () => {
   const dispatch = useDispatch();
@@ -22,10 +27,23 @@ export const Feed = () => {
   }, []);
   if (!data) {
     return (
+<<<<<<< HEAD
       <>
         {/* TODO: Spinner Loading Gif? */}
         <p>...Loading...</p>
       </>
+=======
+      <div style={{ marginTop: "50px" }}>
+        {/* Loading Style */}
+        <Loader
+          type="Grid"
+          color={COLORS.BLUE.PRIMARY}
+          m
+          height={80}
+          width={80}
+        />
+      </div>
+>>>>>>> parent/master
     );
   }
   console.log(data);
@@ -49,13 +67,13 @@ export const Feed = () => {
           {/* Add to cart button wont display if out off stock */}
         </StockCont>
 
-        <button
+        <Button
           onClick={() => {
             dispatch(addItem(item));
           }}
         >
           Purchase
-        </button>
+        </Button>
       </Li>
     );
   });
@@ -102,4 +120,13 @@ const StockCont = styled.div`
 const Stock = styled.p`
   font-style: italic;
   margin: 2px;
+`;
+
+const Button = styled.button`
+  border-radius: 15%;
+  border: 1px solid ${COLORS.BLUE.PRIMARY};
+  background-color: ${COLORS.PURPLE.SECONDARY};
+  color: #fff;
+  font-size: 15px;
+  padding: 3px 10px;
 `;
