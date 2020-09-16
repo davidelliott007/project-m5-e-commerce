@@ -4,12 +4,37 @@
 
 const { openFilePromise } = require("./filelibs.js");
 const fs = require("fs");
+const cleanPriceData = (items) => {
+  console.log("cleanPriceData");
+
+  let new_items = items.map((element) => {
+    let price_cleaned_string = element.price.replace("$", "");
+    let price_float = parseFloat(price_cleaned_string);
+    return { ...element, price: price_float };
+  });
+
+  return new_items;
+};
+
+function chunkArray(myArray, chunk_size) {
+  var index = 0;
+  var arrayLength = myArray.length;
+  var tempArray = [];
+
+  for (index = 0; index < arrayLength; index += chunk_size) {
+    myChunk = myArray.slice(index, index + chunk_size);
+    // Do something if you want with the group
+    tempArray.push(myChunk);
+  }
+
+  return tempArray;
+}
 
 const renderOnlyInStock = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     let onlyInStockItems = items.filter((item) => item.numInStock > 0);
 
@@ -29,11 +54,44 @@ const renderOnlyInStock = async (req, res) => {
   }
 };
 
+const renderOnlyInStockPaged = async (req, res) => {
+  try {
+    console.log("renderOnlyInStockPaged");
+    const items_data = await openFilePromise("./data/items.json");
+
+    const { paginationNumber } = req.params;
+
+    console.log(paginationNumber);
+    let items = cleanPriceData(JSON.parse(items_data));
+
+    let onlyInStockItems = items.filter((item) => item.numInStock > 0);
+
+    let paginatedStockItems = chunkArray(
+      onlyInStockItems,
+      parseInt(paginationNumber)
+    );
+
+    res.status(200).json({ paginatedStockItems });
+  } catch (e) {
+    console.error(e.code);
+
+    if (e.code === "ENOENT") {
+      let return_error_object = {
+        ...e,
+        messgae: "couldn't find the json file",
+      };
+      res.status(404).json(return_error_object);
+    } else {
+      res.status(404).json(e);
+    }
+  }
+};
+
 const renderOnlyOutOfStock = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     let onlyOutOfStock = items.filter((item) => item.numInStock === 0);
 
@@ -57,7 +115,7 @@ const renderOnlyInStockByBodyType = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     items = items.filter((item) => item.numInStock > 0);
 
@@ -111,7 +169,7 @@ const renderOnlyOutOfStockByBodyType = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     items = items.filter((item) => item.numInStock === 0);
 
@@ -163,7 +221,7 @@ const renderOnlyInStockCategory = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
     items = items.filter((item) => item.numInStock > 0);
 
     // get an array of all body types
@@ -212,7 +270,7 @@ const renderOnlyOutOfStockCategory = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
     items = items.filter((item) => item.numInStock === 0);
 
     // get an array of all body types
@@ -272,7 +330,7 @@ const renderItemsByCompanyID = async (req, res) => {
       (company) => company._id === companyIDNum
     );
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     console.log(companyID);
     console.log(companyID);
@@ -312,7 +370,7 @@ const renderItemsByCompanyName = async (req, res) => {
 
     let companies = JSON.parse(companies_data);
 
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     let companyByName = companies.filter(
       (company) => company.name.toLowerCase() === companyName.toLowerCase()
@@ -349,6 +407,7 @@ const renderItemsByCompanyName = async (req, res) => {
 
 module.exports = {
   renderOnlyInStock,
+  renderOnlyInStockPaged,
   renderOnlyOutOfStock,
   renderOnlyInStockByBodyType,
   renderOnlyOutOfStockByBodyType,

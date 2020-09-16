@@ -11,12 +11,14 @@ const {
   renderBigDataByBodyTypeAlpha,
   renderBigDataCategoryAlpha,
   baconEndPoint,
-  renderBigDataByPriceAlpha,
+  renderBigDataByPrice,
 } = require("./bigData.js");
 
 // this is where you will get just items, sorted by various
 const {
   renderOnlyInStock,
+
+  renderOnlyInStockPaged,
   renderOnlyOutOfStock,
   renderOnlyInStockByBodyType,
   renderOnlyOutOfStockByBodyType,
@@ -31,8 +33,32 @@ const { renderBodyTypes } = require("./bodyTypes.js");
 const { renderCompanies } = require("./companies.js");
 // our first change!!!!
 let dave = "dave";
-
+let pagination = false;
+let localPageSize = 10;
 const PORT = 4000;
+
+const postPageSize = async (req, res) => {
+  try {
+    console.log("trying");
+    pagination = true;
+    const { pageSize } = req.pagesize;
+    localPageSize = parseInt(pagesize);
+
+    res.status(201).json({ pagination, localPageSize });
+  } catch (e) {
+    console.error(e.code);
+
+    if (e.code === "ENOENT") {
+      let return_error_object = {
+        ...e,
+        messgae: "couldn't find the json file",
+      };
+      res.status(404).json(return_error_object);
+    } else {
+      res.status(404).json(e);
+    }
+  }
+};
 
 express()
   .use(function (req, res, next) {
@@ -63,10 +89,12 @@ express()
   // prices come with desicriptos, remove refurbished
   // just give raw number for the cart prices.
 
-  .get("/bigData/itemsByPrice", renderBigDataByPriceAlpha)
+  .get("/bigData/itemsByPrice", renderBigDataByPrice)
   .get("/bigData/itemsByCategory", renderBigDataCategoryAlpha)
 
   .get("/onlyInStock", renderOnlyInStock)
+  .get("/onlyInStockPaged/:paginationNumber", renderOnlyInStockPaged)
+
   .get("/onlyOutOfStock", renderOnlyOutOfStock)
 
   .get("/onlyInStock/alphabeticalItems", renderOnlyInStock)
@@ -85,6 +113,9 @@ express()
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
 
   // REST endpoints?
-  // .get("/", renderBigData)
+  .get("/", renderBigData)
+
+  // .post("/turnOnPaginate/", postPageSize)
+  // .post("/turnOffPaginate/", postPaginationOff)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

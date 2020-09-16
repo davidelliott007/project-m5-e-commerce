@@ -1,6 +1,26 @@
 const { openFilePromise } = require("./filelibs.js");
+// const { cleanPriceData } = require("./datacleaning");
+
 const fs = require("fs");
-const { cleanPriceData } = require("./datacleaning");
+function sortFloat(a, b) {
+  return a.price - b.price;
+}
+
+const cleanPriceData = (items) => {
+  console.log("cleanPriceData");
+
+  items = items.map((element) => {
+    let price_cleaned_string = element.price.replace("$", "");
+    let price_float = parseFloat(price_cleaned_string);
+    console.log(price_float);
+    return { ...element, price: price_float };
+  });
+
+  // console.log(new_items[0]);
+  // console.log(new_items[1]);
+
+  return items;
+};
 
 const renderBigData = async (req, res) => {
   try {
@@ -10,7 +30,7 @@ const renderBigData = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     res.status(200).json({ companies, items });
   } catch (e) {
@@ -30,17 +50,15 @@ const renderBigData = async (req, res) => {
 
 const renderBigDataAlphabeticalItems = async (req, res) => {
   try {
-    const companies_data = await openFilePromise("./data/companies.json");
     const items_data = await openFilePromise("./data/items.json");
 
-    let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     let sorted_items = items.sort((a, b) => {
       a.name < b.name;
     });
 
-    res.status(200).json({ companies, sorted_items });
+    res.status(200).json({ sorted_items });
   } catch (e) {
     console.error(e.code);
 
@@ -62,7 +80,7 @@ const renderBigDataByBodyTypeAlpha = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     // get an array of all body types
 
@@ -105,26 +123,22 @@ const renderBigDataByBodyTypeAlpha = async (req, res) => {
   }
 };
 
-const renderBigDataByPriceAlpha = async (req, res) => {
+const renderBigDataByPrice = async (req, res) => {
   try {
-    const companies_data = await openFilePromise("./data/companies.json");
     const items_data = await openFilePromise("./data/items.json");
 
-    let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
-    console.log("hello");
-    console.log(items);
+    items = items.sort(sortFloat);
 
-    let cleaned_prices = cleanPriceData(items);
+    console.log(items[0]);
+    console.log(items[1]);
 
-    items.forEach((item) => {
-      if (categories.includes(item.category) === false) {
-        categories.push(item.category);
-      }
+    items.forEach((e) => {
+      console.log(e.price);
     });
 
-    res.status(200).json({ cleaned_prices });
+    res.status(200).json({ items });
   } catch (e) {
     console.error(e.code);
 
@@ -146,7 +160,7 @@ const renderBigDataCategoryAlpha = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items = cleanPriceData(JSON.parse(items_data));
 
     // get an array of all body types
 
@@ -197,6 +211,6 @@ module.exports = {
   renderBigDataAlphabeticalItems,
   renderBigDataByBodyTypeAlpha,
   renderBigDataCategoryAlpha,
-  renderBigDataByPriceAlpha,
+  renderBigDataByPrice,
   baconEndPoint,
 };
