@@ -31,7 +31,8 @@ const IndividualCartItem = ({ item }) => {
               }}
             ></Input>
             <SubTotal>
-              SUBTOTAL:<SubTotalAmount>Can ${subTotal}</SubTotalAmount>
+              SUBTOTAL:
+              <SubTotalAmount>Can ${subTotal.toFixed(2)}</SubTotalAmount>
             </SubTotal>
           </InputSection>
         </ItemDetails>
