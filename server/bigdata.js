@@ -1,8 +1,11 @@
 const { openFilePromise } = require("./filelibs.js");
 const fs = require("fs");
+const { cleanPriceData } = require("./datacleaning");
 
 const renderBigData = async (req, res) => {
   try {
+    console.log("hello");
+
     const companies_data = await openFilePromise("./data/companies.json");
     const items_data = await openFilePromise("./data/items.json");
 
@@ -102,6 +105,41 @@ const renderBigDataByBodyTypeAlpha = async (req, res) => {
   }
 };
 
+const renderBigDataByPriceAlpha = async (req, res) => {
+  try {
+    const companies_data = await openFilePromise("./data/companies.json");
+    const items_data = await openFilePromise("./data/items.json");
+
+    let companies = JSON.parse(companies_data);
+    let items = JSON.parse(items_data);
+
+    console.log("hello");
+    console.log(items);
+
+    let cleaned_prices = cleanPriceData(items);
+
+    items.forEach((item) => {
+      if (categories.includes(item.category) === false) {
+        categories.push(item.category);
+      }
+    });
+
+    res.status(200).json({ cleaned_prices });
+  } catch (e) {
+    console.error(e.code);
+
+    if (e.code === "ENOENT") {
+      let return_error_object = {
+        ...e,
+        messgae: "couldn't find the json file",
+      };
+      res.status(404).json(return_error_object);
+    } else {
+      res.status(404).json(e);
+    }
+  }
+};
+
 const renderBigDataCategoryAlpha = async (req, res) => {
   try {
     const companies_data = await openFilePromise("./data/companies.json");
@@ -159,5 +197,6 @@ module.exports = {
   renderBigDataAlphabeticalItems,
   renderBigDataByBodyTypeAlpha,
   renderBigDataCategoryAlpha,
+  renderBigDataByPriceAlpha,
   baconEndPoint,
 };

@@ -11,6 +11,7 @@ const {
   renderBigDataByBodyTypeAlpha,
   renderBigDataCategoryAlpha,
   baconEndPoint,
+  renderBigDataByPriceAlpha,
 } = require("./bigData.js");
 
 // this is where you will get just items, sorted by various
@@ -55,7 +56,14 @@ express()
   .get("/bigData", renderBigData)
   .get("/bigData/alphabeticalItems", renderBigDataAlphabeticalItems)
   .get("/bigData/itemsByBodyType", renderBigDataByBodyTypeAlpha)
-  .get("/bigData/itemsByPrice", renderBigDataAlphabeticalItems)
+  // TODO ->>> Acutally do this
+  //TODO: Pagination endpoint
+
+  // No dollar sign for cart items
+  // prices come with desicriptos, remove refurbished
+  // just give raw number for the cart prices.
+
+  .get("/bigData/itemsByPrice", renderBigDataByPriceAlpha)
   .get("/bigData/itemsByCategory", renderBigDataCategoryAlpha)
 
   .get("/onlyInStock", renderOnlyInStock)
@@ -77,6 +85,6 @@ express()
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
 
   // REST endpoints?
-  .get("/bacon", baconEndPoint)
+  // .get("/", renderBigData)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
