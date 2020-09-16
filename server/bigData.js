@@ -8,6 +8,7 @@ const renderBigData = async (req, res) => {
 
     let companies = JSON.parse(companies_data);
     let items = JSON.parse(items_data);
+    console.log(items);
 
     res.status(200).json({ companies, items });
   } catch (e) {
