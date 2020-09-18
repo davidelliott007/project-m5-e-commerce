@@ -6,6 +6,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
 import Cart from "../components/Cart/Cart";
+import FourOhFour from '../components/errrorPage/fourOhFour'
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
         </Route>
         <Route exact path="/cart">
           <Cart />
+        </Route>
+        <Route path="/404">
+          <FourOhFour />
         </Route>
       </Switch>
     </Router>
