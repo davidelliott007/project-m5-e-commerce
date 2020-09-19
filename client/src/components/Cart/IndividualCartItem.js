@@ -18,7 +18,7 @@ const IndividualCartItem = ({ item }) => {
         <ItemImage src={item.imageSrc} />
         <ItemDetails>
           <div>
-            <ItemName>{item.name}</ItemName>
+            <ItemName to={`item/${item._id}`}>{item.name}</ItemName>
             {/* <Brand>
               By: <BrandName>{brand.name}</BrandName>
             </Brand> */}
@@ -99,12 +99,16 @@ const ItemDetails = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0 5px;
-  max-width: 69vw;
+  margin-left: 5px;
+  max-width: 70%;
   justify-content: space-between;
 `;
 
-const ItemName = styled.h1`
+const ItemName = styled(Link)`
+  display: inline-block;
+  text-decoration: none;
+  color: black;
+  font-size: 1.1em;
   font-weight: 600;
   white-space: nowrap;
   max-width: 100%;
