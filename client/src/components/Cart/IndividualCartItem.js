@@ -26,30 +26,37 @@ const IndividualCartItem = ({ item }) => {
           <Price>CAN{item.price}</Price>
           <InputSection>
             <Input
-              type="number"
               value={quantity}
               onChange={(ev) => {
-                console.log(ev.target.value);
+                const numbersOnly = /^\d+$/;
+
+                //this first if checks for positive whole numbers and doesn't register an error if the string is empty
                 if (
-                  (isNaN(parseInt(ev.target.value)) &&
+                  (!numbersOnly.test(ev.target.value) &&
                     ev.target.value !== "") ||
                   ev.target.value < 0 ||
-                  ev.target.value % 1 != 0 ||
-                  ev.target.value.includes("e")
+                  ev.target.value % 1 != 0
                 ) {
                   dispatch(updateQuantity(item._id, ""));
                   setError("Please input a positive, whole number");
-                } else if (ev.target.value > item.numInStock) {
+                  return;
+                }
+                //This checks if the quantity is above number in stock and sets it to the max capacity if the user inputs a number above stock level
+                if (ev.target.value > item.numInStock) {
                   dispatch(updateQuantity(item._id, item.numInStock));
                   setError(`Only ${item.numInStock} left in stock`);
-                } else if (ev.target.value === "0") {
+                  return;
+                }
+                //This changes the focus to delete button if user inputs 0
+                if (ev.target.value === "0") {
                   dispatch(updateQuantity(item._id, ev.target.value));
                   setError("To delete item, press DELETE button");
                   deleteDom.current.focus();
-                } else {
-                  setError("");
-                  dispatch(updateQuantity(item._id, ev.target.value));
+                  return;
                 }
+
+                setError("");
+                dispatch(updateQuantity(item._id, ev.target.value));
               }}
             ></Input>
             <SubTotal>
@@ -89,6 +96,7 @@ const ItemImage = styled.img`
 `;
 
 const ItemDetails = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 0 5px;
@@ -130,6 +138,9 @@ const Input = styled.input`
 `;
 
 const Error = styled.p`
+  position: absolute;
+  transform: translateY(100%);
+  bottom: -10px;
   color: red;
 `;
 
