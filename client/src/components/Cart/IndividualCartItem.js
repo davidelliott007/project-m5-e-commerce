@@ -35,7 +35,7 @@ const IndividualCartItem = ({ item }) => {
                   (!numbersOnly.test(ev.target.value) &&
                     ev.target.value !== "") ||
                   ev.target.value < 0 ||
-                  ev.target.value % 1 != 0
+                  ev.target.value % 1 !== 0
                 ) {
                   dispatch(updateQuantity(item._id, ""));
                   setError("Please input a positive, whole number");
@@ -64,7 +64,7 @@ const IndividualCartItem = ({ item }) => {
               <SubTotalAmount>Can ${subTotal.toFixed(2)}</SubTotalAmount>
             </SubTotal>
           </InputSection>
-          {error == "" ? null : <Error>{error}</Error>}
+          {error === "" ? null : <Error>{error}</Error>}
         </ItemDetails>
       </ItemWrapper>
       <DeleteButton
