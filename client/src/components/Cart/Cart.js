@@ -13,14 +13,14 @@ const Cart = () => {
   storeItems.forEach((item) => {
     total += item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
   });
-  if (!total) {
+  if (!storeItems.length) {
     return (
       <EmptyWraper>
         <Empty>
           <p>Your cart is empty!</p>
         </Empty>
       </EmptyWraper>
-    )
+    );
   }
   return (
     <Wrapper>
@@ -88,13 +88,6 @@ const EmptyWraper = styled.div`
   color: ${COLORS.PURPLE.PRIMARY};
   font-size: 1.5em;
   font-weight: 600;
-
-
-
 `;
 
-const Empty = styled.p`
-
-`;
-
-
+const Empty = styled.p``;

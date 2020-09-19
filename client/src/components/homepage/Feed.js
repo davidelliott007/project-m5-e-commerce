@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { addItem } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, requestItems, receiveItems, catchError } from "../../actions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { Btn } from "../button/Button";
 
 export const Feed = () => {
   const dispatch = useDispatch();
@@ -15,20 +16,22 @@ export const Feed = () => {
   function renderItemPage(itemId) {
     history.push(`/items/${itemId}`);
   }
-
-  const [data, setData] = React.useState();
+  const data = useSelector((state) => {
+    return state.feed;
+  });
 
   React.useEffect(() => {
+    dispatch(requestItems());
     fetch("/bigData")
       .then((res) => res.json())
       .then((json) => {
-        setData(json);
+        dispatch(receiveItems(json));
       })
       .catch((err) => {
-        console.error(err);
+        dispatch(catchError(err));
       });
   }, []);
-  if (!data) {
+  if (!data.items.items) {
     return (
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
@@ -42,37 +45,51 @@ export const Feed = () => {
       </div>
     );
   }
-  console.log(data);
-  return data.items.map((item) => {
-    return (
-      <Li itemId={item._id} onClick={renderItemPage}>
-        <Name>{item.name}</Name>
-        <Price>{item.price}</Price>
-        <div>
-          <Img src={item.imageSrc} />
-        </div>
+  if (data.items !== undefined) {
+    return data.items.items.map((item) => {
+      return (
+        <Li key={item.name}>
+          <Name>{item.name}</Name>
+          <Price>{item.price}</Price>
+          <div>
+            <Img src={item.imageSrc} />
+          </div>
 
-        <Location>{item.body_location} - </Location>
-        <Category>{item.category}</Category>
-        <StockCont>
-          <Stock>
-            {/* If Stock is 0, it will simply display 'Out Of Stock */}
-            {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
-            {item.numInStock > 0 ? " Left in Stock!" : null}
-          </Stock>
-          {/* Add to cart button wont display if out off stock */}
-        </StockCont>
+          <Location>{item.body_location} - </Location>
+          <Category>{item.category}</Category>
+          <StockCont>
+            <Stock>
+              {/* If Stock is 0, it will simply display 'Out Of Stock */}
+              {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
+              {item.numInStock > 0 ? " Left in Stock!" : null}
+            </Stock>
+            {/* Add to cart button wont display if out off stock */}
+          </StockCont>
+          {/* Btn Ternary so the button doesn't appear if out of stock, causing an error in Cart.js however */}
+          {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
+          {item.numInStock > 0 ? (
+            <Button
+              onClick={() => {
+                dispatch(addItem(item));
+              }}
+            >
+              {" "}
+              Purchase{" "}
+            </Button>
+          ) : null}
 
-        <Button
+          {/* this */}
+          {/* <Button
           onClick={() => {
             dispatch(addItem(item));
           }}
         >
           Purchase
-        </Button>
-      </Li>
-    );
-  });
+        </Button> */}
+        </Li>
+      );
+    });
+  }
 };
 
 const Li = styled.li`
