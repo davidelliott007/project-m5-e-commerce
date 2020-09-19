@@ -58,8 +58,11 @@ const validatePurchase = async (req, res) => {
   });
 
   if (error !== "") {
+    //if there is an error, the purchase won't work and it won't be pushed in stockUpdates array. Instead, we'll send an error code
+    //to the front end and encourage users to try again.
     res.status(406).json({ status: error });
   } else {
+    //If the purchase has no error and passes the form validation, then it will be pushed to the stockUpdates array and will be send back to the user.
     const order = { orderId: uuidv4(), itemsBought: purchasedItemsArray };
     stockUpdates.push(order);
     res.status(200).json({ status: "valid", order });
