@@ -28,6 +28,8 @@ const {
 const { renderBodyTypes } = require("./bodyTypes.js");
 
 const { renderCompanies } = require("./companies.js");
+
+const { renderIndividualItem } = require("./individualItem.js");
 // our first change!!!!
 let dave = "dave";
 
@@ -75,6 +77,8 @@ express()
 
   .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
+
+  .get("/items/:itemId", renderIndividualItem)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)

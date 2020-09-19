@@ -3,15 +3,18 @@ import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { addItem } from "../../actions";
-<<<<<<< HEAD
-=======
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
->>>>>>> parent/master
 
 export const Feed = () => {
   const dispatch = useDispatch();
+  let history = useHistory();
+
+  function renderItemPage(itemId) {
+    history.push(`/items/${itemId}`);
+  }
 
   const [data, setData] = React.useState();
 
@@ -27,12 +30,6 @@ export const Feed = () => {
   }, []);
   if (!data) {
     return (
-<<<<<<< HEAD
-      <>
-        {/* TODO: Spinner Loading Gif? */}
-        <p>...Loading...</p>
-      </>
-=======
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
         <Loader
@@ -43,13 +40,12 @@ export const Feed = () => {
           width={80}
         />
       </div>
->>>>>>> parent/master
     );
   }
   console.log(data);
   return data.items.map((item) => {
     return (
-      <Li>
+      <Li itemId={item._id} onClick={renderItemPage}>
         <Name>{item.name}</Name>
         <Price>{item.price}</Price>
         <div>
