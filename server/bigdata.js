@@ -1,7 +1,6 @@
 const { openFilePromise } = require("./filelibs.js");
 // const { cleanPriceData } = require("./datacleaning");
 
-const fs = require("fs");
 function sortFloat(a, b) {
   return a.price - b.price;
 }
