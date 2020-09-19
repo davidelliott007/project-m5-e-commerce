@@ -28,6 +28,8 @@ const {
 const { renderBodyTypes } = require("./bodyTypes.js");
 
 const { renderCompanies } = require("./companies.js");
+
+const { validatePurchase } = require("./validatePurchase");
 // our first change!!!!
 let dave = "dave";
 
@@ -75,6 +77,9 @@ express()
 
   .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
+
+  //Put
+  .put("/purchase", validatePurchase)
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)

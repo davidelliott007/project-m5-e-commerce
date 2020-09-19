@@ -31,7 +31,22 @@ const Cart = () => {
         <Total>
           TOTAL: <Bigger> CAN ${total.toFixed(2)}</Bigger>
         </Total>
-        <PurchaseButton>CHECKOUT</PurchaseButton>
+        <PurchaseButton
+          onClick={() => {
+            fetch("/purchase", {
+              method: "PUT",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(storeItems),
+            })
+              .then((res) => res.json())
+              .then((data) => console.log("Put data", data))
+              .catch((err) => console.log(err));
+          }}
+        >
+          CHECKOUT
+        </PurchaseButton>
       </TotalWrapper>
     </Wrapper>
   );
