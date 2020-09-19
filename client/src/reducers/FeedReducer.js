@@ -1,6 +1,6 @@
 import produce from "immer";
 
-const initialState = { items: null, status: "idle" };
+const initialState = { items: [], status: "idle" };
 
 export default function feedReducer(state = initialState, action) {
   switch (action.type) {
