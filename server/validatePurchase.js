@@ -112,7 +112,6 @@ const validatePurchase = async (req, res) => {
 
     // open the file from purchases.json,
 
-    console.log("dave");
     try {
       const purchases_data = await openFilePromise("./data/purchases.json");
       let purchases = JSON.parse(purchases_data);

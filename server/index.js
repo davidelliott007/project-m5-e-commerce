@@ -81,5 +81,8 @@ express()
 
   // REST endpoints?
   .get("/bacon", baconEndPoint)
+  //
 
-  .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+  .listen(PORT, () => {
+    console.info(`Listening on port ${PORT}`);
+  });
