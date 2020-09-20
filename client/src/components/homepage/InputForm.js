@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { COLORS } from '../styles/Colors';
+import { COLORS } from "../styles/Colors";
 
 export const InputForm = () => {
-
-  const test = () => {alert('test')}
+  const test = () => {
+    alert("test");
+  };
 
   return (
     <Form>
@@ -77,6 +78,7 @@ const Form = styled.form`
 
 const Label = styled.label`
   margin-top: 3px;
+  margin-bottom: 8px;
   color: ${COLORS.BLUE.PRIMARY};
 `;
 
