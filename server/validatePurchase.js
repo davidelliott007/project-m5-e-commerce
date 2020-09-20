@@ -9,6 +9,50 @@ const { v4: uuidv4 } = require("uuid");
 //   }
 let stockUpdates = [];
 
+async function checkItemsAgainstPurchasedStock(items) {
+  // console.log(items[0]);
+  try {
+    const purchases_data = await openFilePromise("./data/purchases.json");
+    let purchases = JSON.parse(purchases_data);
+    console.log(purchases[0]);
+    let last_index = 0;
+    purchases.forEach((purchase) => {
+      // find the items sub array from items that macthes the purchase
+      let items_matched_to_purchase = items.filter(
+        (item) => item._id === purchase.itemsBought[0].id
+      );
+
+      let indexOfItemToChange = items.findIndex(
+        (item) => item === items_matched_to_purchase[0]
+      );
+
+      last_index = indexOfItemToChange;
+      items[indexOfItemToChange].numInStock =
+        items[indexOfItemToChange].numInStock -
+        purchase.itemsBought[0].quantity;
+    });
+    console.log(items);
+
+    fs.writeFile("./data/items-altered.json", JSON.stringify(items), function (
+      err
+    ) {
+      if (err) {
+        reject(err);
+      }
+      resolve("./data.items-altered.json" + " was saved!");
+    });
+
+    // let file_confirmation = await writeFile("items-altered.json", items);
+
+    // console.log(file_confirmation);
+    console.log("file written");
+
+    console.log(file_confirmation);
+  } catch (e) {
+    // no purchases exist, do nothing
+  }
+}
+
 const validatePurchase = async (req, res) => {
   const items_data = await openFilePromise("./data/items.json");
 
@@ -74,6 +118,8 @@ const validatePurchase = async (req, res) => {
       let purchases = JSON.parse(purchases_data);
       purchases.push(order);
       let file_confirmation = await writeFile("purchases.json", purchases);
+
+      checkItemsAgainstPurchasedStock(parsed_items_data);
     } catch (e) {
       console.log("e");
       console.error(e.code);
@@ -81,6 +127,7 @@ const validatePurchase = async (req, res) => {
       let purchases = [order];
       // no file of purchases exists yet, let's make one.
       let file_confirmation = await writeFile("purchases.json", purchases);
+      checkItemsAgainstPurchasedStock(parsed_items_data);
     }
 
     // try {
