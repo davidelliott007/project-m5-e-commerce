@@ -13,6 +13,14 @@ const renderOnlyInStock = async (req, res) => {
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
+    // TODO: Mae, here is where I can clean the Price for you, but it will
+    // storeItems.forEach((item) => {
+    //   total += item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
+    // });
+    // in your cart, so it's commented out
+
+    items = cleanPriceData(items);
+
     let onlyInStockItems = items.filter((item) => item.numInStock > 0);
 
     res.status(200).json({ onlyInStockItems });
@@ -38,6 +46,7 @@ const renderOnlyOutOfStock = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     let onlyOutOfStock = items.filter((item) => item.numInStock === 0);
 
@@ -64,6 +73,7 @@ const renderOnlyInStockByBodyType = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     items = items.filter((item) => item.numInStock > 0);
 
@@ -120,6 +130,7 @@ const renderOnlyOutOfStockByBodyType = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     items = items.filter((item) => item.numInStock === 0);
 
@@ -174,6 +185,8 @@ const renderOnlyInStockCategory = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
+
     items = items.filter((item) => item.numInStock > 0);
 
     // get an array of all body types
@@ -225,6 +238,8 @@ const renderOnlyOutOfStockCategory = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
+
     items = items.filter((item) => item.numInStock === 0);
 
     // get an array of all body types
@@ -287,6 +302,7 @@ const renderItemsByCompanyID = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     console.log(companyID);
     console.log(companyID);
@@ -329,6 +345,7 @@ const renderItemsByCompanyName = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     let companyByName = companies.filter(
       (company) => company.name.toLowerCase() === companyName.toLowerCase()

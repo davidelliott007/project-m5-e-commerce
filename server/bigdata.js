@@ -3,17 +3,27 @@ const {
   promiseCheckItemsAgainstPurchasedStock,
 } = require("./reconcileStock.js");
 
+const { cleanPriceData } = require("./cleanPriceData");
+
 const fs = require("fs");
 const { resolve } = require("path");
 
 const renderBigData = async (req, res) => {
   try {
     const companies_data = await openFilePromise("./data/companies.json");
+
     const items_data = await openFilePromise("./data/items.json");
     let companies = JSON.parse(companies_data);
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    // TODO: Mae, here is where I can clean the Price for you, but it will
+    // storeItems.forEach((item) => {
+    //   total += item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
+    // });
+    // in your cart, so it's commented out
+
+    // items = cleanPriceData(items);
 
     res.status(200).json({ items, companies });
   } catch (e) {
@@ -40,6 +50,7 @@ const renderBigDataAlphabeticalItems = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     let sorted_items = items.sort((a, b) => {
       a.name < b.name;
@@ -70,6 +81,7 @@ const renderBigDataByBodyTypeAlpha = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     // get an array of all body types
 
@@ -121,6 +133,7 @@ const renderBigDataCategoryAlpha = async (req, res) => {
     let items_parsed = JSON.parse(items_data);
 
     let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
+    items = cleanPriceData(items);
 
     // get an array of all body types
 
