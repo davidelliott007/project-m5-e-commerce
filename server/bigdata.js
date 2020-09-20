@@ -81,7 +81,9 @@ const renderBigDataAlphabeticalItems = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     let sorted_items = items.sort((a, b) => {
       a.name < b.name;
@@ -109,7 +111,9 @@ const renderBigDataByBodyTypeAlpha = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     // get an array of all body types
 
@@ -158,7 +162,9 @@ const renderBigDataCategoryAlpha = async (req, res) => {
     const items_data = await openFilePromise("./data/items.json");
 
     let companies = JSON.parse(companies_data);
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     // get an array of all body types
 

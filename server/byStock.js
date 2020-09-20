@@ -9,7 +9,9 @@ const renderOnlyInStock = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     let onlyInStockItems = items.filter((item) => item.numInStock > 0);
 
@@ -33,7 +35,9 @@ const renderOnlyOutOfStock = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     let onlyOutOfStock = items.filter((item) => item.numInStock === 0);
 
@@ -57,7 +61,9 @@ const renderOnlyInStockByBodyType = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     items = items.filter((item) => item.numInStock > 0);
 
@@ -111,7 +117,9 @@ const renderOnlyOutOfStockByBodyType = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     items = items.filter((item) => item.numInStock === 0);
 
@@ -163,7 +171,9 @@ const renderOnlyInStockCategory = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
     items = items.filter((item) => item.numInStock > 0);
 
     // get an array of all body types
@@ -212,7 +222,9 @@ const renderOnlyOutOfStockCategory = async (req, res) => {
   try {
     const items_data = await openFilePromise("./data/items.json");
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
     items = items.filter((item) => item.numInStock === 0);
 
     // get an array of all body types
@@ -272,7 +284,9 @@ const renderItemsByCompanyID = async (req, res) => {
       (company) => company._id === companyIDNum
     );
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     console.log(companyID);
     console.log(companyID);
@@ -312,7 +326,9 @@ const renderItemsByCompanyName = async (req, res) => {
 
     let companies = JSON.parse(companies_data);
 
-    let items = JSON.parse(items_data);
+    let items_parsed = JSON.parse(items_data);
+
+    let items = await promiseCheckItemsAgainstPurchasedStock(items_parsed);
 
     let companyByName = companies.filter(
       (company) => company.name.toLowerCase() === companyName.toLowerCase()
