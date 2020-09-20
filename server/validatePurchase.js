@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { openFilePromise } = require("./filelibs.js");
+const { openFilePromise, writeFile } = require("./filelibs.js");
 const { v4: uuidv4 } = require("uuid");
 
 // the stockUpdates array will contain objects containing the order info. The order info has this shape
@@ -22,7 +22,7 @@ const validatePurchase = async (req, res) => {
 
   let purchasedItemsArray = [];
 
-  purchasedItems.forEach((purchasedItem) => {
+  purchasedItems.forEach(async (purchasedItem) => {
     //first we find the item in stock that matches the item we bought
     let foundItem = parsed_items_data.find((storeItem) => {
       if (storeItem._id === purchasedItem._id) {
@@ -65,8 +65,35 @@ const validatePurchase = async (req, res) => {
     //If the purchase has no error and passes the form validation, then it will be pushed to the stockUpdates array and will be send back to the user.
     const order = { orderId: uuidv4(), itemsBought: purchasedItemsArray };
     stockUpdates.push(order);
+
+    // open the file from purchases.json,
+
+    console.log("dave");
+    try {
+      const purchases_data = await openFilePromise("./data/purchases.json");
+      let purchases = JSON.parse(purchases_data);
+      purchases.push(order);
+      let file_confirmation = await writeFile("purchases.json", purchases);
+    } catch (e) {
+      console.log("e");
+      console.error(e.code);
+
+      let purchases = [order];
+      // no file of purchases exists yet, let's make one.
+      let file_confirmation = await writeFile("purchases.json", purchases);
+    }
+
+    // try {
+    //   const purchases_data = await openFilePromise("./data/purchases.json");
+    //   let purchases = JSON.parse(purchases_data);
+    //   purchases.push(order);
+    //   let file_confirmation = await writeFile("purchases.json", stocks);
+    // } catch (e) {
+    //   console.error(e.code);
+    // }
+
     res.status(200).json({ status: "valid", order });
-    console.log(stockUpdates);
+    // console.log(stockUpdates);
   }
 };
 

@@ -30,8 +30,6 @@ const { renderBodyTypes } = require("./bodyTypes.js");
 const { renderCompanies } = require("./companies.js");
 
 const { validatePurchase } = require("./validatePurchase");
-// our first change!!!!
-let dave = "dave";
 
 const PORT = 4000;
 

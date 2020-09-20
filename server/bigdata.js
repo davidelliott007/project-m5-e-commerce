@@ -1,6 +1,19 @@
 const { openFilePromise } = require("./filelibs.js");
 const fs = require("fs");
 
+async function checkItemsAgainstPurchasedStock(items) {
+  const stock_data = await openFilePromise("./data/stock.json");
+  let stock = JSON.parse(stock_data);
+
+  console.log(stock);
+  // let reduced_items = items;
+  // items.forEach {
+
+  // }
+
+  return items;
+}
+
 const renderBigData = async (req, res) => {
   try {
     const companies_data = await openFilePromise("./data/companies.json");
@@ -8,6 +21,8 @@ const renderBigData = async (req, res) => {
 
     let companies = JSON.parse(companies_data);
     let items = JSON.parse(items_data);
+
+    // let checked_items = checkItemsAgainstPurchasedStock(items);
 
     res.status(200).json({ companies, items });
   } catch (e) {
