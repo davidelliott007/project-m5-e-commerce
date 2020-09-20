@@ -1,6 +1,1 @@
-[
-  {
-    "orderId": "7f511ea1-9120-4df8-9c40-35e210236a01",
-    "itemsBought": [{ "id": 6543, "quantity": 1 }]
-  }
-]
+[{"orderId":"7f511ea1-9120-4df8-9c40-35e210236a01","itemsBought":[{"id":6543,"quantity":1}]},{"orderId":"9e689f97-9a9c-46e0-8871-20067569f272","itemsBought":[{"id":6543,"quantity":1}]}]
