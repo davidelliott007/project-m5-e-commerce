@@ -22,18 +22,19 @@ const promiseCheckItemsAgainstPurchasedStock = async (items) => {
     let last_index = 0;
     purchases.forEach((purchase) => {
       // find the items sub array from items that macthes the purchase
-      let items_matched_to_purchase = items.filter(
-        (item) => item._id === purchase.itemsBought[0].id
-      );
 
-      let indexOfItemToChange = items.findIndex(
-        (item) => item === items_matched_to_purchase[0]
-      );
+      purchase.itemsBought.forEach((indiv_item) => {
+        let items_matched_to_purchase = items.filter(
+          (item) => item._id === indiv_item.id
+        );
 
-      // option - put changed items at top?
-      items[indexOfItemToChange].numInStock =
-        items[indexOfItemToChange].numInStock -
-        purchase.itemsBought[0].quantity;
+        let indexOfItemToChange = items.findIndex(
+          (item) => item === items_matched_to_purchase[0]
+        );
+        items[indexOfItemToChange].numInStock =
+          items[indexOfItemToChange].numInStock -
+          purchase.itemsBought[0].quantity;
+      });
     });
     console.log(items[0]);
 
