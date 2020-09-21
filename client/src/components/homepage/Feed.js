@@ -11,7 +11,7 @@ import {
   receiveItemsPaginated,
 } from "../../actions";
 
-import { getPages } from "../../reducers/CartReducer.js";
+import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -24,6 +24,7 @@ export const Feed = () => {
   });
 
   const pages = useSelector(getPages);
+  const pageNumber = useSelector(getPageNumber);
 
   const { status } = data;
 
@@ -65,10 +66,7 @@ export const Feed = () => {
     );
   }
   if (data.items !== undefined) {
-    console.log(Object.keys(pages));
-
-    // let pages_to_return = pages[currentPage];
-    return pages[currentPage].map((item) => {
+    return pages[pageNumber].map((item) => {
       return (
         <div>
           <Li key={item.name}>

@@ -14,6 +14,11 @@ export const updateQuantity = (id, newQuantity) => ({
   newQuantity,
 });
 
+export const updatePageToView = (pageNumber) => ({
+  type: "UPDATE_CURRENT_PAGE_TO_VIEW",
+  pageNumber,
+});
+
 export const clearCart = () => ({
   type: "CLEAR_CART",
 });

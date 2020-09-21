@@ -4,18 +4,23 @@ import { Feed } from "./Feed";
 import { InputForm } from "./InputForm";
 import { useState } from "react";
 import { COLORS } from "../styles/Colors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { getPages } from "../../reducers/CartReducer.js";
+import { updatePageToView } from "../../actions";
+
+import { getPages } from "../../reducers/FeedReducer.js";
 
 const Homepage = () => {
   const [showForm, setShowForm] = useState(false);
   const displayForm = () => setShowForm(true);
   const hideForm = () => setShowForm(false);
   const pages = useSelector(getPages);
+  const dispatch = useDispatch();
 
   function handlePageClick(event) {
     console.log(event.target.id);
+    let nummber = parseInt(event.target.id);
+    dispatch(updatePageToView(nummber));
   }
 
   return (

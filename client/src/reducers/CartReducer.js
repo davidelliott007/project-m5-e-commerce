@@ -43,9 +43,3 @@ export default function cartReducer(state = initialState, action) {
 }
 
 export const getStoreItemArray = (state) => Object.values(state);
-
-export const getPages = (state) => {
-  if (state.feed.pages !== undefined) {
-    return state.feed.pages;
-  }
-};
