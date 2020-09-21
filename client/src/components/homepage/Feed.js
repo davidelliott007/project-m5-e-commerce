@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, requestItems, receiveItems, catchError } from "../../actions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import { Btn } from "../button/Button";
+import FiveHundred from '../errrorPage/FiveHundred'
 
 export const Feed = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => {
     return state.feed;
   });
+  const errorState = useSelector((catchError))
+  
 
   React.useEffect(() => {
     dispatch(requestItems());
@@ -25,6 +27,17 @@ export const Feed = () => {
         dispatch(catchError(err));
       });
   }, []);
+
+  if (errorState === 500) {
+    console.log(errorState)
+    return (
+      <div>
+        <FiveHundred />
+      </div>
+    )
+  }
+
+
   if (!data.items.items) {
     return (
       <div style={{ marginTop: "50px" }}>
@@ -40,6 +53,7 @@ export const Feed = () => {
     );
   }
   if (data.items !== undefined) {
+    
     return data.items.items.map((item) => {
       return (
         <Li key={item.name}>
@@ -68,7 +82,7 @@ export const Feed = () => {
               }}
             >
               {" "}
-              Purchase{" "}
+              Add To Cart{" "}
             </Button>
           ) : null}
 
