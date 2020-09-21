@@ -3,16 +3,76 @@ import styled from "styled-components";
 import IndividualCartItem from "./IndividualCartItem";
 import { useSelector } from "react-redux";
 import { COLORS } from "../styles/Colors";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../actions";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 const Cart = () => {
   const storeItems = useSelector((state) => {
     return Object.values(state.cart);
   });
 
+  const dispatch = useDispatch();
+  const [ValidationData, setValidationData] = React.useState(null);
+  const [error, setError] = React.useState("");
+  const [status, setStatus] = React.useState("idle");
+
   let total = 0;
   storeItems.forEach((item) => {
     total += item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
   });
+
+  if (status === "loading") {
+    return (
+      <LoaderWrapper>
+        {/* Loading Style */}
+        <Loader
+          type="Grid"
+          color={COLORS.BLUE.PRIMARY}
+          m
+          height={80}
+          width={80}
+        />
+      </LoaderWrapper>
+    );
+  }
+
+  if (ValidationData !== null && error === "") {
+    return (
+      <ValidationWrapper>
+        <Confirmation>Thank you for your purchase !</Confirmation>
+        <Paragraph>
+          Your confirmation number is <div>{ValidationData.order.orderId}</div>
+        </Paragraph>
+        <Paragraph>
+          Need anything else ?{" "}
+          <ContinueShopping to={"/"}>Continue Shopping</ContinueShopping>
+        </Paragraph>
+      </ValidationWrapper>
+    );
+  }
+
+  if (error !== "") {
+    return (
+      <ValidationWrapper>
+        <Confirmation>We're sorry, something went wrong !</Confirmation>
+        <Paragraph>
+          Please{" "}
+          <ContinueShopping
+            to={"#"}
+            onClick={(ev) => {
+              setError("");
+            }}
+          >
+            try again
+          </ContinueShopping>
+        </Paragraph>
+      </ValidationWrapper>
+    );
+  }
+
   if (!storeItems.length) {
     return (
       <EmptyWraper>
@@ -33,6 +93,8 @@ const Cart = () => {
         </Total>
         <PurchaseButton
           onClick={() => {
+            setValidationData(null);
+            setStatus("loading");
             fetch("/purchase", {
               method: "PUT",
               headers: {
@@ -40,9 +102,23 @@ const Cart = () => {
               },
               body: JSON.stringify(storeItems),
             })
-              .then((res) => res.json())
-              .then((data) => console.log("Put data", data))
-              .catch((err) => console.log(err));
+              .then((res) => {
+                if (!res.ok) {
+                  throw Error("server Error");
+                }
+                return res.json();
+              })
+              .then((data) => {
+                setStatus("idle");
+                console.log(data);
+                setValidationData(data);
+                dispatch(clearCart());
+              })
+              .catch((err) => {
+                setStatus("idle");
+                console.log(err);
+                setError("error");
+              });
           }}
         >
           CHECKOUT
@@ -106,3 +182,26 @@ const EmptyWraper = styled.div`
 `;
 
 const Empty = styled.p``;
+
+const ValidationWrapper = styled.div`
+  margin-top: 40px;
+  margin-left: 5px;
+`;
+
+const Confirmation = styled.h1`
+  color: ${COLORS.PURPLE.PRIMARY};
+  margin: 20px 0;
+  font-size: 1.2em;
+`;
+
+const Paragraph = styled.p`
+  margin: 20px 0;
+`;
+
+const ContinueShopping = styled(Link)``;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+`;
