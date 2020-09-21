@@ -110,14 +110,11 @@ export const Feed = () => {
           Purchase
         </Button> */}
           </Li>
-          <PageNavigator></PageNavigator>
         </div>
       );
     });
   }
 };
-
-const PageNavigator = styled.div``;
 
 const Li = styled.li`
   margin-top: 15px;
