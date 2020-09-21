@@ -6,15 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, requestItems, receiveItems, catchError } from "../../actions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import FiveHundred from '../errrorPage/FiveHundred'
+import FiveHundred from "../errrorPage/FiveHundred";
 
 export const Feed = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => {
     return state.feed;
   });
-  const errorState = useSelector((catchError))
-  
+  const { status } = data;
 
   React.useEffect(() => {
     dispatch(requestItems());
@@ -28,15 +27,14 @@ export const Feed = () => {
       });
   }, []);
 
-  if (errorState === 500) {
-    console.log(errorState)
+  if (status === "error") {
+    // console.log(errorState);
     return (
       <div>
         <FiveHundred />
       </div>
-    )
+    );
   }
-
 
   if (!data.items.items) {
     return (
@@ -53,7 +51,6 @@ export const Feed = () => {
     );
   }
   if (data.items !== undefined) {
-    
     return data.items.items.map((item) => {
       return (
         <Li key={item.name}>
