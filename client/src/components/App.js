@@ -6,7 +6,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
 import Cart from "../components/Cart/Cart";
-import FourOhFour from './errrorPage/FourOhFour'
+import FourOhFour from "./errrorPage/fourOhFour";
 
 function App() {
   return (
