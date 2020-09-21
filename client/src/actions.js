@@ -27,6 +27,11 @@ export const receiveItems = (items) => ({
   items,
 });
 
+export const receiveItemsPaginated = (items) => ({
+  type: "RECEIVE_ITEMS_PAGINATED",
+  items,
+});
+
 export const catchError = (err) => ({
   type: "CATCH_ERROR",
   err,
