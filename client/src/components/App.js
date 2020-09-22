@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
+
 import GlobalStyles from "./styles/GlobalStyles";
 import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
