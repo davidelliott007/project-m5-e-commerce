@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { receiveItemsPaginated, receiveItems } from '../../actions'
+import { receiveItemsPaginated, receiveItems, clearCart } from '../../actions'
 
 //We want:
 // 1. A dropdown menu that goes over each body part.
@@ -16,15 +16,19 @@ export const InputForm = () => {
   const items = useSelector((state) => {
     return state.feed.items.items;
   });
+  const resetItems = () => {
+    return (
+      dispatch(clearCart())
+    )
+  }
   const FilterFunction = (BodyPart) => {
     return items.filter((item) => {
       if (item.body_location === BodyPart) {
         return true;
       }
+      resetItems()
     });
   };
-
-  // wrist arms head waist chest hands feet
 
   return (
     <Wrapper>
