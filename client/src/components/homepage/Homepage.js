@@ -8,13 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { updatePageToView } from "../../actions";
 
-import { getPages } from "../../reducers/FeedReducer.js";
+import { getPageNumber, getPages } from "../../reducers/FeedReducer.js";
 
 const Homepage = () => {
   const [showForm, setShowForm] = useState(false);
   const displayForm = () => setShowForm(true);
   const hideForm = () => setShowForm(false);
   const pages = useSelector(getPages);
+  const pageNumber = useSelector(getPageNumber);
+
   const dispatch = useDispatch();
 
   function handlePageClick(event) {
@@ -38,11 +40,20 @@ const Homepage = () => {
       <PageNavigator>
         {pages !== undefined
           ? Object.keys(pages).map((item) => {
-              return (
-                <ItemButton id={item} onClick={handlePageClick}>
-                  {item}
-                </ItemButton>
-              );
+              let numberItem = parseInt(item);
+              if (numberItem === pageNumber) {
+                return (
+                  <ItemButtonHighlighted id={item} onClick={handlePageClick}>
+                    {item}
+                  </ItemButtonHighlighted>
+                );
+              } else {
+                return (
+                  <ItemButton id={item} onClick={handlePageClick}>
+                    {item}
+                  </ItemButton>
+                );
+              }
             })
           : ""}
       </PageNavigator>
@@ -53,9 +64,29 @@ const Homepage = () => {
 const ItemButton = styled.button`
   background-color: transparent;
   border: 0px;
+  color: ${COLORS.PURPLE.TERTIARY};
+
   :hover {
     cursor: pointer;
-    color: #47c1bf;
+    color: ${COLORS.PURPLE.SECONDARY};
+  }
+  :active {
+    background-color: ${COLORS.PURPLE.PRIMARY};
+  }
+`;
+
+const ItemButtonHighlighted = styled.button`
+  background-color: ${COLORS.PURPLE.PRIMARY};
+
+  border: 0px;
+  border-radius: 5px;
+  color: ${COLORS.BACKGROUND.PRIMARY};
+  :hover {
+    cursor: pointer;
+    color: ${COLORS.PURPLE.SECONDARY};
+  }
+  :active {
+    background-color: ${COLORS.PURPLE.PRIMARY};
   }
 `;
 
