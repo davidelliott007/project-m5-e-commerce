@@ -19,6 +19,34 @@ export default function feedReducer(state = initialState, action) {
       });
     }
 
+    case "RECEIVE_ITEMS_PAGINATED": {
+      return produce(state, (draftState) => {
+        let items = action.items.items;
+
+        let passes = Math.round(items.length / 10);
+
+        let pages = [];
+        for (let i = 0; i <= passes; i++) {
+          let lower_limit = i * 10;
+          let upper_limit = lower_limit + 10;
+          pages.push(items.slice(lower_limit, upper_limit));
+        }
+        console.log(pages[0]);
+        pages = pages.filter((page) => page.length !== 0);
+        draftState.items = action.items;
+        draftState.status = "idleeee";
+        draftState.pages = pages;
+        return draftState;
+      });
+    }
+
+    case "UPDATE_CURRENT_PAGE_TO_VIEW": {
+      return produce(state, (draftState) => {
+        draftState.pageNumber = action.pageNumber;
+        return draftState;
+      });
+    }
+
     case "CATCH_ERROR": {
       return produce(state, (draftState) => {
         draftState.status = "error";
@@ -30,3 +58,17 @@ export default function feedReducer(state = initialState, action) {
       return state;
   }
 }
+
+export const getPages = (state) => {
+  if (state.feed.pages !== undefined) {
+    return state.feed.pages;
+  }
+};
+
+export const getPageNumber = (state) => {
+  if (state.feed.pageNumber !== undefined) {
+    return state.feed.pageNumber;
+  } else {
+    return 0;
+  }
+};

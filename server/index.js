@@ -28,8 +28,8 @@ const {
 const { renderBodyTypes } = require("./bodyTypes.js");
 
 const { renderCompanies } = require("./companies.js");
-// our first change!!!!
-let dave = "dave";
+
+const { validatePurchase } = require("./validatePurchase");
 
 const PORT = 4000;
 
@@ -76,7 +76,13 @@ express()
   .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
 
+  //Put
+  .put("/purchase", validatePurchase)
+
   // REST endpoints?
   .get("/bacon", baconEndPoint)
+  //
 
-  .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+  .listen(PORT, () => {
+    console.info(`Listening on port ${PORT}`);
+  });
