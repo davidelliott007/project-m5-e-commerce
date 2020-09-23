@@ -9,6 +9,7 @@ export const InputForm = () => {
   const items = useSelector((state) => {
     return state.feed.items.items;
   });
+
   const FilterFunction = (BodyPart) => {
     if (BodyPart === "all") {
       return items;
