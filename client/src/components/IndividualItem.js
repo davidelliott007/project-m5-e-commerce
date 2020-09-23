@@ -56,9 +56,9 @@ const IndividualItem = () => {
         return company._id === item.companyId;
       });
 
-      window.onpopstate = (event) => {
-        history.go(-1);
-      };
+      // window.onpopstate = (event) => {
+      //   history.go(-1);
+      // };
 
       return (
         <Wrapper>
