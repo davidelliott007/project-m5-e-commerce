@@ -8,7 +8,7 @@ import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
 import Cart from "../components/Cart/Cart";
 import IndividualItem from "./IndividualItem";
-import FourOhFour from "./errrorPage/fourOhFour";
+import FourOhFour from "./errrorPage/FourOhFour";
 
 function App() {
   return (

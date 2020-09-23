@@ -11,9 +11,7 @@ import { updatePageToView } from "../../actions";
 import { getPageNumber, getPages } from "../../reducers/FeedReducer.js";
 
 const Homepage = () => {
-  const [showForm, setShowForm] = useState(false);
-  const displayForm = () => setShowForm(true);
-  const hideForm = () => setShowForm(false);
+  
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
 
@@ -27,11 +25,7 @@ const Homepage = () => {
   return (
     <Wrapper>
       <Ul>
-        <Input type="submit" value="Options" onClick={displayForm} />
-        {showForm ? <InputForm /> : null}
-        {showForm ? (
-          <Input type="submit" value="Hide" onClick={hideForm} />
-        ) : null}
+        
         <Feed />
       </Ul>
       {/* Feed function called here (Homepage Feed Component) */}
@@ -108,6 +102,7 @@ const Input = styled.input`
   padding: 3px 8px;
   border-radius: 5px;
   border: none;
+  
 `;
 
 const Ul = styled.ul`

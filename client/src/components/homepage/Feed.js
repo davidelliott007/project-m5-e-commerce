@@ -82,7 +82,11 @@ export const Feed = () => {
             <Name>{item.name}</Name>
             <Price>{item.price}</Price>
             <div>
-              <Img src={item.imageSrc} />
+              {item.numInStock > 0 ? (
+                <Img src={item.imageSrc} />
+              ) : (
+                <Img src={item.imageSrc} style={{ filter: "grayscale(100%)" }} />
+              )}
             </div>
 
             <Location>{item.body_location} - </Location>
@@ -90,13 +94,11 @@ export const Feed = () => {
             <StockCont>
               <Stock>
                 {/* If Stock is 0, it will simply display 'Out Of Stock */}
-                {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
-                {item.numInStock > 0 ? " Left in Stock!" : null}
+                {item.numInStock > 0 ? `${item.numInStock} Left in Stock` : "Out of Stock!"}
               </Stock>
               {/* Add to cart button wont display if out off stock */}
             </StockCont>
-            {/* Btn Ternary so the button doesn't appear if out of stock, causing an error in Cart.js however */}
-            {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
+
             {item.numInStock > 0 ? (
               <Button
                 onClick={() => {
