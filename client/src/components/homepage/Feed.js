@@ -13,9 +13,6 @@ export const Feed = () => {
   const dispatch = useDispatch();
   let history = useHistory();
 
-  function renderItemPage(itemId) {
-    history.push(`/items/${itemId}`);
-  }
   const data = useSelector((state) => {
     return state.feed;
   });
@@ -48,7 +45,13 @@ export const Feed = () => {
   if (data.items !== undefined) {
     return data.items.items.map((item) => {
       return (
-        <Li key={item.name}>
+        <Li
+          key={item.name}
+          onClick={(ev) => {
+            ev.stopPropagation();
+            history.push(`/items/${item._id}`);
+          }}
+        >
           <Name>{item.name}</Name>
           <Price>{item.price}</Price>
           <div>
@@ -69,7 +72,8 @@ export const Feed = () => {
           {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
           {item.numInStock > 0 ? (
             <Button
-              onClick={() => {
+              onClick={(ev) => {
+                ev.stopPropagation();
                 dispatch(addItem(item));
               }}
             >

@@ -7,6 +7,7 @@ import { removeItem, updateQuantity } from "../../actions";
 
 const IndividualCartItem = ({ item }) => {
   const [error, setError] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(item.quantity);
   const dispatch = useDispatch();
   let quantity = item.quantity;
   const deleteDom = useRef(null);
@@ -26,7 +27,7 @@ const IndividualCartItem = ({ item }) => {
           <Price>CAN{item.price}</Price>
           <InputSection>
             <Input
-              value={quantity}
+              value={inputValue}
               onChange={(ev) => {
                 const numbersOnly = /^\d+$/;
 
@@ -37,24 +38,33 @@ const IndividualCartItem = ({ item }) => {
                   ev.target.value < 0 ||
                   ev.target.value % 1 !== 0
                 ) {
-                  dispatch(updateQuantity(item._id, ""));
+                  setInputValue("");
+                  dispatch(updateQuantity(item._id, 1));
                   setError("Please input a positive, whole number");
                   return;
                 }
                 //This checks if the quantity is above number in stock and sets it to the max capacity if the user inputs a number above stock level
                 if (ev.target.value > item.numInStock) {
+                  setInputValue(item.numInStock);
                   dispatch(updateQuantity(item._id, item.numInStock));
                   setError(`Only ${item.numInStock} left in stock`);
                   return;
                 }
                 //This changes the focus to delete button if user inputs 0
                 if (ev.target.value === "0") {
+                  setInputValue(ev.target.value);
                   dispatch(updateQuantity(item._id, ev.target.value));
                   setError("To delete item, press DELETE button");
                   deleteDom.current.focus();
                   return;
                 }
-
+                if (ev.target.value === "") {
+                  setInputValue("");
+                  dispatch(updateQuantity(item._id, 1));
+                  setError("");
+                  return;
+                }
+                setInputValue(ev.target.value);
                 setError("");
                 dispatch(updateQuantity(item._id, ev.target.value));
               }}

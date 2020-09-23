@@ -24,7 +24,21 @@ const openTextFilePromise = (filename) => {
   return myPromise;
 };
 
+const writeFile = (filename, jsonToWrite) => {
+  let myPromise = new Promise((resolve, reject) => {
+    let file_plus_dir = "./data/" + filename;
+    fs.writeFile(file_plus_dir, JSON.stringify(jsonToWrite), function (err) {
+      if (err) {
+        reject(err);
+      }
+      resolve(file_plus_dir + " was saved!");
+    });
+  });
+  return myPromise;
+};
+
 module.exports = {
   openFilePromise,
   openTextFilePromise,
+  writeFile,
 };
