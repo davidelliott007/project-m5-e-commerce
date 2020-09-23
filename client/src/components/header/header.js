@@ -52,8 +52,8 @@ const Wrapper = styled.div`
   align-items: center;
   position: sticky;
   top: 0;
-  border-bottom: 1px solid ${COLORS.BLUE.PRIMARY}  
-
+  border-bottom: 1px solid ${COLORS.BLUE.PRIMARY};
+  z-index: 100;
 `;
 
 const Logo = styled.img`

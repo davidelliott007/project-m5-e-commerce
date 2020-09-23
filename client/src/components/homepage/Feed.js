@@ -85,8 +85,7 @@ export const Feed = () => {
             <StockCont>
               <Stock>
                 {/* If Stock is 0, it will simply display 'Out Of Stock */}
-                {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
-                {item.numInStock > 0 ? " Left in Stock!" : null}
+                {item.numInStock > 0 ? `${item.numInStock} Left in Stock` : "Out of Stock!"}
               </Stock>
               {/* Add to cart button wont display if out off stock */}
             </StockCont>
