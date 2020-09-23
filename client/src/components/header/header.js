@@ -12,6 +12,7 @@ import { FaShoppingCart } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 const Header = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
   return (
     <Wrapper>
       <Logo src={logo} />
@@ -24,7 +25,6 @@ const Header = () => {
         </A>
         <A to="/cart" /* onClick to go to cart / cart modal */>
           <FaShoppingCart size={35} />
-
         </A>
       </Nav>
     </Wrapper>
