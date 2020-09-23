@@ -29,6 +29,8 @@ const { renderBodyTypes } = require("./bodyTypes.js");
 
 const { renderCompanies } = require("./companies.js");
 
+const { renderIndividualItem } = require("./individualItem.js");
+
 const { validatePurchase } = require("./validatePurchase");
 
 const PORT = 4000;
@@ -76,6 +78,7 @@ express()
   .get("/itemsByCompanyID/:companyID", renderItemsByCompanyID)
   .get("/itemsByCompanyName/:companyName", renderItemsByCompanyName)
 
+  .get("/items/:itemId", renderIndividualItem)
   //Put
   .put("/purchase", validatePurchase)
 

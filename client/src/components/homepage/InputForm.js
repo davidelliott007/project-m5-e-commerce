@@ -2,14 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { receiveItemsPaginated, receiveItems, clearCart } from "../../actions";
-
-//We want:
-// 1. A dropdown menu that goes over each body part.
-//2. When we change the value, it filters out the items in our feed to show only the approriate items.
-//3. To display feed and pagination, we need to pass this filtered array to REDUX somehow (using daves new action)
-//const { receiveItemsPaginated } = require("../../actions");
-//Idea of how it would look
+import { PaginateItems } from "../../actions";
 
 export const InputForm = () => {
   const dispatch = useDispatch();
@@ -18,6 +11,9 @@ export const InputForm = () => {
   });
 
   const FilterFunction = (BodyPart) => {
+    if (BodyPart === "all") {
+      return items;
+    }
     return items.filter((item) => {
       if (item.body_location === BodyPart) {
         return true;
@@ -33,13 +29,12 @@ export const InputForm = () => {
         name="bodyPart"
         onChange={(ev) => {
           let selectedBodyPart = ev.target.value;
-          console.log(selectedBodyPart);
           let newItems = FilterFunction(selectedBodyPart);
-          dispatch(receiveItemsPaginated({ items: newItems }));
+          dispatch(PaginateItems(newItems));
         }}
       >
-        <Option value="">Select an Option</Option>
-
+        <Option value="all">Select an Option</Option>
+        <Option value="all">All Body Parts</Option>
         <Option value="Wrist">Wrist</Option>
         <Option value="Arms">Arms</Option>
         <Option value="Head">Head</Option>

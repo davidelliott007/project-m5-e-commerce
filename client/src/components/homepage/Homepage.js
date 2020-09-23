@@ -18,7 +18,6 @@ const Homepage = () => {
   const dispatch = useDispatch();
 
   function handlePageClick(event) {
-    console.log(event.target.id);
     let nummber = parseInt(event.target.id);
     dispatch(updatePageToView(nummber));
   }

@@ -32,8 +32,8 @@ export const receiveItems = (items) => ({
   items,
 });
 
-export const receiveItemsPaginated = (items) => ({
-  type: "RECEIVE_ITEMS_PAGINATED",
+export const PaginateItems = (items) => ({
+  type: "PAGINATE_ITEMS",
   items,
 });
 

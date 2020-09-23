@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
   requestItems,
   receiveItems,
   catchError,
-  receiveItemsPaginated,
+  PaginateItems,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -19,6 +20,8 @@ import FiveHundred from "../errrorPage/FiveHundred";
 
 export const Feed = () => {
   const dispatch = useDispatch();
+  let history = useHistory();
+
   const data = useSelector((state) => {
     return state.feed;
   });
@@ -28,14 +31,15 @@ export const Feed = () => {
 
   const { status } = data;
 
-  const [currentPage, setCurrentPage] = React.useState(0);
-
   React.useEffect(() => {
     dispatch(requestItems());
     fetch("/bigData")
       .then((res) => res.json())
       .then((json) => {
-        dispatch(receiveItemsPaginated(json));
+        dispatch(receiveItems(json));
+        if (pages === undefined) {
+          dispatch(PaginateItems(json.items));
+        }
       })
       .catch((err) => {
         dispatch(catchError(err));
@@ -43,7 +47,6 @@ export const Feed = () => {
   }, []);
 
   if (status === "error") {
-    // console.log(errorState);
     return (
       <div>
         <FiveHundred />
@@ -51,7 +54,7 @@ export const Feed = () => {
     );
   }
 
-  if (!data.items.items) {
+  if (!data.pages) {
     return (
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
@@ -65,11 +68,17 @@ export const Feed = () => {
       </div>
     );
   }
-  if (data.items !== undefined) {
+  if (data.pages !== undefined) {
     return pages[pageNumber].map((item) => {
       return (
         <div>
-          <Li key={item.name}>
+          <Li
+            key={item.name}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              history.push(`/items/${item._id}`);
+            }}
+          >
             <Name>{item.name}</Name>
             <Price>{item.price}</Price>
             <div>
@@ -103,7 +112,7 @@ export const Feed = () => {
 
             {/* this */}
             {/* <Button
-          onClick={() => {
+            onClick={() => {
             dispatch(addItem(item));
           }}
           >

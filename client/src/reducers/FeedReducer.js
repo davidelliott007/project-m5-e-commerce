@@ -19,9 +19,9 @@ export default function feedReducer(state = initialState, action) {
       });
     }
 
-    case "RECEIVE_ITEMS_PAGINATED": {
+    case "PAGINATE_ITEMS": {
       return produce(state, (draftState) => {
-        let items = action.items.items;
+        let items = action.items;
 
         let passes = Math.round(items.length / 10);
 
@@ -31,10 +31,7 @@ export default function feedReducer(state = initialState, action) {
           let upper_limit = lower_limit + 10;
           pages.push(items.slice(lower_limit, upper_limit));
         }
-        console.log(pages[0]);
         pages = pages.filter((page) => page.length !== 0);
-        draftState.items = action.items;
-        draftState.status = "idleeee";
         draftState.pages = pages;
         return draftState;
       });

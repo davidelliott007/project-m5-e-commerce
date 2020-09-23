@@ -76,9 +76,7 @@ const Cart = () => {
   if (!storeItems.length) {
     return (
       <EmptyWraper>
-        <Empty>
-          <p>Your cart is empty!</p>
-        </Empty>
+        <Empty>Your cart is empty!</Empty>
       </EmptyWraper>
     );
   }
@@ -110,13 +108,11 @@ const Cart = () => {
               })
               .then((data) => {
                 setStatus("idle");
-                console.log(data);
                 setValidationData(data);
                 dispatch(clearCart());
               })
               .catch((err) => {
                 setStatus("idle");
-                console.log(err);
                 setError("error");
               });
           }}
