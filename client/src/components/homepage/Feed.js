@@ -9,7 +9,7 @@ import {
   requestItems,
   receiveItems,
   catchError,
-  receiveItemsPaginated,
+  PaginateItems,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -31,14 +31,15 @@ export const Feed = () => {
 
   const { status } = data;
 
-  const [currentPage, setCurrentPage] = React.useState(0);
-
   React.useEffect(() => {
     dispatch(requestItems());
     fetch("/bigData")
       .then((res) => res.json())
       .then((json) => {
-        dispatch(receiveItemsPaginated(json));
+        dispatch(receiveItems(json));
+        if (pages === undefined) {
+          dispatch(PaginateItems(json.items));
+        }
       })
       .catch((err) => {
         dispatch(catchError(err));
@@ -46,7 +47,6 @@ export const Feed = () => {
   }, []);
 
   if (status === "error") {
-    // console.log(errorState);
     return (
       <div>
         <FiveHundred />
@@ -54,7 +54,7 @@ export const Feed = () => {
     );
   }
 
-  if (!data.items.items) {
+  if (!data.pages) {
     return (
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
@@ -68,7 +68,7 @@ export const Feed = () => {
       </div>
     );
   }
-  if (data.items !== undefined) {
+  if (data.pages !== undefined) {
     return pages[pageNumber].map((item) => {
       return (
         <div>
@@ -82,7 +82,11 @@ export const Feed = () => {
             <Name>{item.name}</Name>
             <Price>{item.price}</Price>
             <div>
-              <Img src={item.imageSrc} />
+              {item.numInStock > 0 ? (
+                <Img src={item.imageSrc} />
+              ) : (
+                <Img src={item.imageSrc} style={{ filter: "grayscale(100%)" }} />
+              )}
             </div>
 
             <Location>{item.body_location} - </Location>
@@ -90,13 +94,11 @@ export const Feed = () => {
             <StockCont>
               <Stock>
                 {/* If Stock is 0, it will simply display 'Out Of Stock */}
-                {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
-                {item.numInStock > 0 ? " Left in Stock!" : null}
+                {item.numInStock > 0 ? `${item.numInStock} Left in Stock` : "Out of Stock!"}
               </Stock>
               {/* Add to cart button wont display if out off stock */}
             </StockCont>
-            {/* Btn Ternary so the button doesn't appear if out of stock, causing an error in Cart.js however */}
-            {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
+
             {item.numInStock > 0 ? (
               <Button
                 onClick={() => {

@@ -9,9 +9,16 @@ import imgLogo from "../../public/IMG_Logo.png";
 import { BiSearchAlt } from "react-icons/bi";
 // import { FaShoppingCart } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import { InputForm } from "../homepage/InputForm";
 
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
 const Header = () => {
+  const [showForm, setShowForm] = useState(false);
+  const displayForm = () => setShowForm(true);
+  const hideForm = () => setShowForm(false);
+
   return (
     <Wrapper>
       <Logo src={logo} />
@@ -27,14 +34,26 @@ const Header = () => {
 
         </A>
       </Nav>
+      <Input type="submit" value="Options" onClick={displayForm} />
+        {showForm ? <InputForm /> : null}
+        {showForm ? (
+          <Input type="submit" value="Hide" onClick={hideForm} />
+        ) : null}
     </Wrapper>
   );
 };
+
+export default Header;
+
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid ${COLORS.BLUE.PRIMARY};
+  z-index: 100;
 `;
 
 const Logo = styled.img`
@@ -56,4 +75,12 @@ const ImgLogo = styled.img`
   height: 35px;
 `;
 
-export default Header;
+const Input = styled.input`
+  background: ${COLORS.BLUE.PRIMARY};
+  color: ${COLORS.BACKGROUND.PRIMARY};
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 10px;
+`;
+

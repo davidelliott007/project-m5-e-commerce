@@ -1,75 +1,53 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
+import { useSelector, useDispatch } from "react-redux";
+import { PaginateItems } from "../../actions";
 
 export const InputForm = () => {
-  const test = () => {
-    alert("test");
+  const dispatch = useDispatch();
+  const items = useSelector((state) => {
+    return state.feed.items.items;
+  });
+
+  const FilterFunction = (BodyPart) => {
+    if (BodyPart === "all") {
+      return items;
+    }
+    return items.filter((item) => {
+      if (item.body_location === BodyPart) {
+        return true;
+      }
+    });
   };
 
   return (
-    <Form>
-      <Input
-        type="radio"
-        id="wrist"
-        name="equipment"
-        value="wrist"
-        onClick={test}
-      />
-      <Label for="wrist">Wrist</Label>
-      <Input
-        type="radio"
-        id="arms"
-        name="equipment"
-        value="arms"
-        onClick={test}
-      />
-      <Label for="arms">Arms</Label>
-      <Input
-        type="radio"
-        id="head"
-        name="equipment"
-        value="head"
-        onClick={test}
-      />
-      <Label for="head">Head</Label>
-      <Input
-        type="radio"
-        id="waist"
-        name="equipment"
-        value="waist"
-        onClick={test}
-      />
-      <Label for="waist">Waist</Label>
-      <Input
-        type="radio"
-        id="chest"
-        name="equipment"
-        value="chest"
-        onClick={test}
-      />
-      <Label for="chest">Chest</Label>
-      <Input
-        type="radio"
-        id="hands"
-        name="equipment"
-        value="hands"
-        onClick={test}
-      />
-      <Label for="hands">Hands</Label>
-      <Input
-        type="radio"
-        id="feet"
-        name="equipment"
-        value="feet"
-        onClick={test}
-      />
-      <Label for="feet">Feet</Label>
-    </Form>
+    <Wrapper>
+      <Label for="bodyPart">Choose a body part!</Label>
+      <Select
+        id="bodyPart"
+        name="bodyPart"
+        onChange={(ev) => {
+          let selectedBodyPart = ev.target.value;
+          let newItems = FilterFunction(selectedBodyPart);
+          dispatch(PaginateItems(newItems));
+        }}
+      >
+        <Option value="all">Select an Option</Option>
+        <Option value="all">All Body Parts</Option>
+        <Option value="Wrist">Wrist</Option>
+        <Option value="Arms">Arms</Option>
+        <Option value="Head">Head</Option>
+        <Option value="Waist">Waist</Option>
+        <Option value="Chest">Chest</Option>
+        <Option value="Hands">Hands</Option>
+        <Option value="Feet">Feet</Option>
+      </Select>
+    </Wrapper>
   );
 };
 
-const Form = styled.form`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,9 +55,13 @@ const Form = styled.form`
 `;
 
 const Label = styled.label`
-  margin-top: 3px;
-  margin-bottom: 8px;
+  margin-top: 8px;
+  margin-bottom: 2px;
   color: ${COLORS.BLUE.PRIMARY};
 `;
 
-const Input = styled.input``;
+const Select = styled.select`
+  margin-bottom: 8px;
+`;
+
+const Option = styled.option``;

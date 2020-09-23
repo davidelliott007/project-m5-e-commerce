@@ -9,7 +9,6 @@ const IndividualCartItem = ({ item }) => {
   const [error, setError] = React.useState("");
   const [inputValue, setInputValue] = React.useState(item.quantity);
   const dispatch = useDispatch();
-  let quantity = item.quantity;
   const deleteDom = useRef(null);
 
   let subTotal = item.quantity * parseFloat(item.price.slice(1)).toFixed(2);
@@ -19,7 +18,7 @@ const IndividualCartItem = ({ item }) => {
         <ItemImage src={item.imageSrc} />
         <ItemDetails>
           <div>
-            <ItemName to={`item/${item._id}`}>{item.name}</ItemName>
+            <ItemName to={`items/${item._id}`}>{item.name}</ItemName>
             {/* <Brand>
               By: <BrandName>{brand.name}</BrandName>
             </Brand> */}
@@ -127,12 +126,12 @@ const ItemName = styled(Link)`
   margin-bottom: 10px;
 `;
 
-const Brand = styled.p``;
+// const Brand = styled.p``;
 
-const BrandName = styled.span`
-  font-weight: 400;
-  font-style: italic;
-`;
+// const BrandName = styled.span`
+//   font-weight: 400;
+//   font-style: italic;
+// `;
 
 const Price = styled.p`
   font-weight: 600;
