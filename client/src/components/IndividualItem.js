@@ -51,14 +51,11 @@ const IndividualItem = () => {
   }, []);
 
   if (loadStatus === "loaded" && loadCompanyStatus === "loaded") {
+    console.log("test");
     {
       let company = companies.sorted_companies.find((company) => {
         return company._id === item.companyId;
       });
-
-      window.onpopstate = (event) => {
-        history.go(-1);
-      };
 
       return (
         <Wrapper>
@@ -67,9 +64,15 @@ const IndividualItem = () => {
             <Name>{item.name}</Name>
             <Price>{item.price}</Price>
             <Description>
-              <div>Category: {item.category}</div>
               <div>
-                Company: <a href={company.url}>{company.name}</a>{" "}
+                Category: {item.category}
+                <div>Location: {item.body_location}</div>
+              </div>
+              <div>
+                Company:
+                <a href={company.url} target="_blank">
+                  {company.name}
+                </a>
               </div>
             </Description>
           </Product>
