@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { receiveItemsPaginated, receiveItems, clearCart } from '../../actions'
+import { receiveItemsPaginated, receiveItems, clearCart } from "../../actions";
 
 //We want:
 // 1. A dropdown menu that goes over each body part.
@@ -12,21 +12,16 @@ import { receiveItemsPaginated, receiveItems, clearCart } from '../../actions'
 //Idea of how it would look
 
 export const InputForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const items = useSelector((state) => {
     return state.feed.items.items;
   });
-  const resetItems = () => {
-    return (
-      dispatch(clearCart())
-    )
-  }
+
   const FilterFunction = (BodyPart) => {
     return items.filter((item) => {
       if (item.body_location === BodyPart) {
         return true;
       }
-      resetItems()
     });
   };
 
@@ -40,7 +35,7 @@ export const InputForm = () => {
           let selectedBodyPart = ev.target.value;
           console.log(selectedBodyPart);
           let newItems = FilterFunction(selectedBodyPart);
-          dispatch(receiveItemsPaginated({items: newItems}));
+          dispatch(receiveItemsPaginated({ items: newItems }));
         }}
       >
         <Option value="">Select an Option</Option>
