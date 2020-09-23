@@ -37,7 +37,9 @@ export const Feed = () => {
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveItems(json));
-        dispatch(PaginateItems(json.items));
+        if (pages === undefined) {
+          dispatch(PaginateItems(json.items));
+        }
       })
       .catch((err) => {
         dispatch(catchError(err));
