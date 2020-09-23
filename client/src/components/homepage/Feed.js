@@ -9,7 +9,7 @@ import {
   requestItems,
   receiveItems,
   catchError,
-  receiveItemsPaginated,
+  PaginateItems,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -31,14 +31,13 @@ export const Feed = () => {
 
   const { status } = data;
 
-  const [currentPage, setCurrentPage] = React.useState(0);
-
   React.useEffect(() => {
     dispatch(requestItems());
     fetch("/bigData")
       .then((res) => res.json())
       .then((json) => {
-        dispatch(receiveItemsPaginated(json));
+        dispatch(receiveItems(json));
+        dispatch(PaginateItems(json.items));
       })
       .catch((err) => {
         dispatch(catchError(err));
@@ -46,7 +45,6 @@ export const Feed = () => {
   }, []);
 
   if (status === "error") {
-    // console.log(errorState);
     return (
       <div>
         <FiveHundred />
@@ -54,7 +52,7 @@ export const Feed = () => {
     );
   }
 
-  if (!data.items.items) {
+  if (!data.pages) {
     return (
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
@@ -68,7 +66,7 @@ export const Feed = () => {
       </div>
     );
   }
-  if (data.items !== undefined) {
+  if (data.pages !== undefined) {
     return pages[pageNumber].map((item) => {
       return (
         <div>
