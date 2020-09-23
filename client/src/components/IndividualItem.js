@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useParams, useHistory } from "react-router-dom";
 import { addItem, catchError } from "../actions";
 import { COLORS } from "./styles/Colors";
 import Loader from "react-loader-spinner";
@@ -9,6 +9,7 @@ import Loader from "react-loader-spinner";
 const IndividualItem = () => {
   const dispatch = useDispatch();
   let { itemId } = useParams();
+  let history = useHistory();
 
   const [item, setItemData] = React.useState("");
   const [companies, setCompaniesData] = React.useState();
@@ -55,6 +56,10 @@ const IndividualItem = () => {
         return company._id === item.companyId;
       });
 
+      window.onpopstate = (event) => {
+        history.go(-1);
+      };
+
       return (
         <Wrapper>
           <Img src={item.imageSrc} />
@@ -74,6 +79,7 @@ const IndividualItem = () => {
               ev.stopPropagation();
               dispatch(addItem(item));
             }}
+            disabled={item.numInStock == 0}
           >
             Add To Cart
           </Button>
@@ -100,12 +106,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 10px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  height: 100%;
 `;
 
 const Img = styled.img`
   height: 335px;
   width: 350px;
+  max-height: 80%;
+  max-width: 90%;
   border-radius: 15px;
 `;
 
@@ -152,6 +161,9 @@ const Button = styled.button`
   font-size: bold;
   width: 100%;
   height: 35px;
+  &:disabled {
+    background-color: grey;
+  }
 `;
 
 export default IndividualItem;

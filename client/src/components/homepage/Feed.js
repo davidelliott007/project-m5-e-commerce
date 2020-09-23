@@ -4,10 +4,19 @@ import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, requestItems, receiveItems, catchError } from "../../actions";
+import {
+  addItem,
+  requestItems,
+  receiveItems,
+  catchError,
+  receiveItemsPaginated,
+} from "../../actions";
+
+import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
+
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import { Btn } from "../button/Button";
+import FiveHundred from "../errrorPage/FiveHundred";
 
 export const Feed = () => {
   const dispatch = useDispatch();
@@ -17,17 +26,34 @@ export const Feed = () => {
     return state.feed;
   });
 
+  const pages = useSelector(getPages);
+  const pageNumber = useSelector(getPageNumber);
+
+  const { status } = data;
+
+  const [currentPage, setCurrentPage] = React.useState(0);
+
   React.useEffect(() => {
     dispatch(requestItems());
     fetch("/bigData")
       .then((res) => res.json())
       .then((json) => {
-        dispatch(receiveItems(json));
+        dispatch(receiveItemsPaginated(json));
       })
       .catch((err) => {
         dispatch(catchError(err));
       });
   }, []);
+
+  if (status === "error") {
+    // console.log(errorState);
+    return (
+      <div>
+        <FiveHundred />
+      </div>
+    );
+  }
+
   if (!data.items.items) {
     return (
       <div style={{ marginTop: "50px" }}>
@@ -43,54 +69,55 @@ export const Feed = () => {
     );
   }
   if (data.items !== undefined) {
-    return data.items.items.map((item) => {
+    return pages[pageNumber].map((item) => {
       return (
-        <Li
-          key={item.name}
-          onClick={(ev) => {
-            ev.stopPropagation();
-            history.push(`/items/${item._id}`);
-          }}
-        >
-          <Name>{item.name}</Name>
-          <Price>{item.price}</Price>
-          <div>
-            <Img src={item.imageSrc} />
-          </div>
+        <div>
+          <Li
+            key={item.name}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              history.push(`/items/${item._id}`);
+            }}
+          >
+            <Name>{item.name}</Name>
+            <Price>{item.price}</Price>
+            <div>
+              <Img src={item.imageSrc} />
+            </div>
 
-          <Location>{item.body_location} - </Location>
-          <Category>{item.category}</Category>
-          <StockCont>
-            <Stock>
-              {/* If Stock is 0, it will simply display 'Out Of Stock */}
-              {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
-              {item.numInStock > 0 ? " Left in Stock!" : null}
-            </Stock>
-            {/* Add to cart button wont display if out off stock */}
-          </StockCont>
-          {/* Btn Ternary so the button doesn't appear if out of stock, causing an error in Cart.js however */}
-          {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
-          {item.numInStock > 0 ? (
-            <Button
-              onClick={(ev) => {
-                ev.stopPropagation();
-                dispatch(addItem(item));
-              }}
-            >
-              {" "}
-              Purchase{" "}
-            </Button>
-          ) : null}
+            <Location>{item.body_location} - </Location>
+            <Category>{item.category}</Category>
+            <StockCont>
+              <Stock>
+                {/* If Stock is 0, it will simply display 'Out Of Stock */}
+                {item.numInStock > 0 ? item.numInStock : "Out of Stock!"}
+                {item.numInStock > 0 ? " Left in Stock!" : null}
+              </Stock>
+              {/* Add to cart button wont display if out off stock */}
+            </StockCont>
+            {/* Btn Ternary so the button doesn't appear if out of stock, causing an error in Cart.js however */}
+            {/* {item.numInStock > 0 ? <Btn item={item} /> : null } */}
+            {item.numInStock > 0 ? (
+              <Button
+                onClick={() => {
+                  dispatch(addItem(item));
+                }}
+              >
+                {" "}
+                Add To Cart{" "}
+              </Button>
+            ) : null}
 
-          {/* this */}
-          {/* <Button
-          onClick={() => {
+            {/* this */}
+            {/* <Button
+            onClick={() => {
             dispatch(addItem(item));
           }}
-        >
+          >
           Purchase
         </Button> */}
-        </Li>
+          </Li>
+        </div>
       );
     });
   }

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "./styles/Colors";
+
 import GlobalStyles from "./styles/GlobalStyles";
 import Header from "../components/header/header";
 import Homepage from "./homepage/Homepage";
 import Cart from "../components/Cart/Cart";
-import FourOhFour from "../components/errrorPage/fourOhFour";
 import IndividualItem from "./IndividualItem";
+import FourOhFour from "./errrorPage/fourOhFour";
 
 function App() {
   return (
@@ -32,9 +33,7 @@ function App() {
         <Route exact path="/cart">
           <Cart />
         </Route>
-        <Route path="/404">
-          <FourOhFour />
-        </Route>
+        <Route component={FourOhFour} />
       </Switch>
     </Router>
   );
