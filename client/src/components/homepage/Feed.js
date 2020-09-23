@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { FaCartPlus } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
@@ -19,6 +20,8 @@ import FiveHundred from "../errrorPage/FiveHundred";
 
 export const Feed = () => {
   const dispatch = useDispatch();
+  let history = useHistory();
+
   const data = useSelector((state) => {
     return state.feed;
   });
@@ -69,7 +72,13 @@ export const Feed = () => {
     return pages[pageNumber].map((item) => {
       return (
         <div>
-          <Li key={item.name}>
+          <Li
+            key={item.name}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              history.push(`/items/${item._id}`);
+            }}
+          >
             <Name>{item.name}</Name>
             <Price>{item.price}</Price>
             <div>
@@ -101,7 +110,7 @@ export const Feed = () => {
 
             {/* this */}
             {/* <Button
-          onClick={() => {
+            onClick={() => {
             dispatch(addItem(item));
           }}
           >
