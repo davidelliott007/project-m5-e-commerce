@@ -18,8 +18,8 @@ const Homepage = () => {
   const dispatch = useDispatch();
 
   function handlePageClick(event) {
-    let nummber = parseInt(event.target.id);
-    dispatch(updatePageToView(nummber));
+    let number = parseInt(event.target.id);
+    dispatch(updatePageToView(number));
   }
 
   return (
@@ -30,20 +30,31 @@ const Homepage = () => {
       </Ul>
       {/* Feed function called here (Homepage Feed Component) */}
 
+      <LineBreak></LineBreak>
+
       <PageNavigator>
-        {pages !== undefined
-          ? Object.keys(pages).map((item) => {
+        {pages !== undefined && Object.keys(pages).length > 1
+          ? Object.keys(pages).map((item, i) => {
               let numberItem = parseInt(item);
               if (numberItem === pageNumber) {
+                let item_display_number = parseInt(item) + 1;
                 return (
                   <ItemButtonHighlighted id={item} onClick={handlePageClick}>
-                    {item}
+                    {item_display_number}
                   </ItemButtonHighlighted>
                 );
-              } else {
+              } else if (i === 10) {
+                let item_display_number = parseInt(item) + 1;
                 return (
                   <ItemButton id={item} onClick={handlePageClick}>
-                    {item}
+                    {item_display_number}
+                  </ItemButton>
+                );
+              } else {
+                let item_display_number = parseInt(item) + 1;
+                return (
+                  <ItemButton id={item} onClick={handlePageClick}>
+                    {item_display_number}
                   </ItemButton>
                 );
               }
@@ -53,11 +64,21 @@ const Homepage = () => {
     </Wrapper>
   );
 };
+const LineBreak = styled.button`
+  border: 0px;
+  border-top: 1px dashed ${COLORS.BLUE.PRIMARY};
+  background-color: transparent;
+  height: 15px;
+  width: 75%;
+  margin-top: 10px;
+`;
 
 const ItemButton = styled.button`
   background-color: transparent;
   border: 0px;
   color: ${COLORS.PURPLE.TERTIARY};
+  padding-bottom: 10px;
+  padding-top: 5px;
 
   :hover {
     cursor: pointer;
@@ -70,6 +91,8 @@ const ItemButton = styled.button`
 
 const ItemButtonHighlighted = styled.button`
   background-color: ${COLORS.PURPLE.PRIMARY};
+  padding-bottom: 10px;
+  padding-top: 5px;
 
   border: 0px;
   border-radius: 5px;
@@ -86,8 +109,11 @@ const ItemButtonHighlighted = styled.button`
 const PageNavigator = styled.div`
   display: flex;
   flex-direction: row;
-  width: 80%;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: auto;
+  max-width: 480px;
+  border-radius: 5px;
 `;
 
 const Wrapper = styled.div`
