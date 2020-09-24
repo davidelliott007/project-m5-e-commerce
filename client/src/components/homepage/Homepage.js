@@ -11,9 +11,9 @@ import { updatePageToView } from "../../actions";
 import { getPageNumber, getPages } from "../../reducers/FeedReducer.js";
 
 const Homepage = () => {
-  
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
+  const displayPageNumber = pageNumber + 1;
 
   const dispatch = useDispatch();
 
@@ -25,14 +25,57 @@ const Homepage = () => {
   return (
     <Wrapper>
       <Ul>
-        
         <Feed />
       </Ul>
       {/* Feed function called here (Homepage Feed Component) */}
 
       <LineBreak></LineBreak>
+      <MaePage>
+        {pageNumber === 0 ? null : (
+          <>
+            <Previous
+              onClick={() => {
+                dispatch(updatePageToView(pageNumber - 1));
+              }}
+            >
+              {"<PREVIOUS"}
+            </Previous>
+            <PagePrevious
+              onClick={() => {
+                dispatch(updatePageToView(pageNumber - 1));
+              }}
+            >
+              {displayPageNumber - 1}
+            </PagePrevious>
+          </>
+        )}
 
-      <PageNavigator>
+        <PageActive>{displayPageNumber}</PageActive>
+        {pages !== undefined && pageNumber + 1 > pages.length - 1 ? null : (
+          <PageNext onClick={() => dispatch(updatePageToView(pageNumber + 1))}>
+            {displayPageNumber + 1}
+          </PageNext>
+        )}
+
+        {pages !== undefined &&
+        pages.length > 3 &&
+        pageNumber < pages.length - 2 ? (
+          <>
+            <Dots>...</Dots>
+            <FinalPage
+              onClick={() => dispatch(updatePageToView(pages.length - 1))}
+            >
+              {pages.length}
+            </FinalPage>
+          </>
+        ) : null}
+        {pages !== undefined && pageNumber + 1 > pages.length - 1 ? null : (
+          <Next onClick={() => dispatch(updatePageToView(pageNumber + 1))}>
+            {"NEXT>"}
+          </Next>
+        )}
+      </MaePage>
+      {/* <PageNavigator>
         {pages !== undefined && Object.keys(pages).length > 1
           ? Object.keys(pages).map((item, i) => {
               let numberItem = parseInt(item);
@@ -60,10 +103,34 @@ const Homepage = () => {
               }
             })
           : ""}
-      </PageNavigator>
+      </PageNavigator> */}
     </Wrapper>
   );
 };
+
+const MaePage = styled.div`
+  display: flex;
+  width: 100;
+  justify-content: center;
+  margin: 10px 0;
+`;
+
+const Previous = styled.button``;
+
+const Next = styled.button``;
+
+const PagePrevious = styled.button``;
+
+const PageActive = styled.button`
+  background-color: ${COLORS.PURPLE.PRIMARY};
+`;
+
+const PageNext = styled.button``;
+
+const Dots = styled.span``;
+
+const FinalPage = styled.button``;
+
 const LineBreak = styled.button`
   border: 0px;
   border-top: 1px dashed ${COLORS.BLUE.PRIMARY};
@@ -128,7 +195,6 @@ const Input = styled.input`
   padding: 3px 8px;
   border-radius: 5px;
   border: none;
-  
 `;
 
 const Ul = styled.ul`
