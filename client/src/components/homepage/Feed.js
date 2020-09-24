@@ -26,9 +26,6 @@ export const Feed = () => {
     return state.feed;
   });
 
-  const cart = useSelector((state) => state.cart);
-  console.log("cart", cart);
-
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
 
