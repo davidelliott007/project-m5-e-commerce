@@ -102,6 +102,7 @@ const Cart = () => {
             })
               .then((res) => {
                 if (!res.ok) {
+                  console.log(res.status);
                   throw Error("server Error");
                 }
                 return res.json();
@@ -110,6 +111,7 @@ const Cart = () => {
                 setStatus("idle");
                 setValidationData(data);
                 dispatch(clearCart());
+                console.log(data);
               })
               .catch((err) => {
                 setStatus("idle");
