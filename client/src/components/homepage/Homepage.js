@@ -131,11 +131,8 @@ const Dots = styled.span``;
 
 const FinalPage = styled.button``;
 
-const LineBreak = styled.button`
-  border: 0px;
+const LineBreak = styled.div`
   border-top: 1px dashed ${COLORS.BLUE.PRIMARY};
-  background-color: transparent;
-  height: 15px;
   width: 75%;
   margin-top: 10px;
 `;
