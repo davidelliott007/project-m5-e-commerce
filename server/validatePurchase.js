@@ -44,7 +44,7 @@ const validatePurchase = async (req, res) => {
       return;
     }
     //check if we bought too many of this item compared to the amount left in stock
-    if (purchasedItem.quantity > foundItem.quantity) {
+    if (purchasedItem.quantity > foundItem.numInStock) {
       error = "Not enough items in stock";
       return;
     }
@@ -74,7 +74,7 @@ const validatePurchase = async (req, res) => {
     //If the purchase has no error and passes the form validation, then it will be pushed to the stockUpdates array and will be send back to the user.
     const order = { orderId: uuidv4(), itemsBought: purchasedItemsArray };
     stockUpdates.push(order);
-    console.log(error);
+    console.log("error", error);
     // open the file from purchases.json,
 
     try {
