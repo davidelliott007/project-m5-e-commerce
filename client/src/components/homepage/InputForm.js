@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { PaginateItems } from "../../actions";
+import { PaginateItems, updatePageToView } from "../../actions";
 
 export const InputForm = () => {
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ export const InputForm = () => {
         onChange={(ev) => {
           let selectedBodyPart = ev.target.value;
           let newItems = FilterFunction(selectedBodyPart);
+          dispatch(updatePageToView(0));
           dispatch(PaginateItems(newItems));
         }}
       >
