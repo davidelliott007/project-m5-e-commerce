@@ -9,7 +9,6 @@ import Loader from "react-loader-spinner";
 const IndividualItem = () => {
   const dispatch = useDispatch();
   let { itemId } = useParams();
-  let history = useHistory();
 
   const [item, setItemData] = React.useState("");
   const [companies, setCompaniesData] = React.useState();
