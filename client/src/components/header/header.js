@@ -14,8 +14,11 @@ import TypeAhead from "./TypeAhead";
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const cartItems = useSelector((state) => Object.values(state.cart));
+
   const [isOpen, setIsOpen] = React.useState(false);
   let maxHeight = 0;
   if (isOpen) {
@@ -38,6 +41,7 @@ const Header = () => {
         </Button>
         <A to="/cart" /* onClick to go to cart / cart modal */>
           <FaShoppingCart size={35} />
+          <CartItemNumDisplay>{cartItems.length}</CartItemNumDisplay>
         </A>
       </Nav>
       <TypeAhead maxHeight={maxHeight} />
@@ -76,6 +80,19 @@ const Nav = styled.nav`
 
 const A = styled(Link)`
   color: ${COLORS.PURPLE.PRIMARY};
+`;
+
+const CartItemNumDisplay = styled.span`
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  background-color: ${COLORS.BLUE.PRIMARY};
+  color: white;
+  border-radius: 50%;
+  padding: 7px;
+  font-size: 10px;
+  font-weight: bold;
+  left: 80%;
 `;
 
 const ImgLogo = styled.img`
