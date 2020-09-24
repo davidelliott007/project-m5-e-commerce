@@ -30,7 +30,7 @@ const IndividualItem = () => {
         setLoadStatus("loaded");
       })
       .catch((err) => dispatch(catchError(err)));
-  }, []);
+  }, [itemId]);
 
   React.useEffect(() => {
     fetch("/companies", {
@@ -47,7 +47,7 @@ const IndividualItem = () => {
         setLoadCompanyStatus("loaded");
       })
       .catch((err) => dispatch(catchError(err)));
-  }, []);
+  }, [itemId]);
 
   if (loadStatus === "loaded" && loadCompanyStatus === "loaded") {
     console.log("test");

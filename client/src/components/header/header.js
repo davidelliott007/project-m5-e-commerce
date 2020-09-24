@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 // This is the full logo with text
@@ -20,10 +20,10 @@ const Header = () => {
   const cartItems = useSelector((state) => Object.values(state.cart));
 
   const [isOpen, setIsOpen] = React.useState(false);
-  let maxHeight = 0;
-  if (isOpen) {
-    maxHeight = "1000px";
-  }
+  // let maxHeight = 0;
+  // if (isOpen) {
+  //   maxHeight = "1000px";
+  // }
   const toggleSearchForm = () => setIsOpen(!isOpen);
   const [showForm, setShowForm] = useState(false);
   const displayForm = () => setShowForm(true);
@@ -44,7 +44,7 @@ const Header = () => {
           <CartItemNumDisplay>{cartItems.length}</CartItemNumDisplay>
         </A>
       </Nav>
-      <TypeAhead maxHeight={maxHeight} />
+      {isOpen ? <TypeAhead isOpen={isOpen} setIsOpen={setIsOpen} /> : null}
       <Input type="submit" value="Options" onClick={displayForm} />
       {showForm ? <InputForm /> : null}
       {showForm ? (
