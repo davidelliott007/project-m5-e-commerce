@@ -53,6 +53,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 `;
 
 const Label = styled.label`
@@ -63,6 +64,13 @@ const Label = styled.label`
 
 const Select = styled.select`
   margin-bottom: 8px;
+  border-radius: 15px;
+  color: ${COLORS.BLUE.PRIMARY};
+  background-color: ${COLORS.BACKGROUND.PRIMARY};
+  padding: 3px 6px;
+  border: 2px solid ${COLORS.PURPLE.SECONDARY};
 `;
 
-const Option = styled.option``;
+const Option = styled.option`
+  font-weight: bold;
+`;
