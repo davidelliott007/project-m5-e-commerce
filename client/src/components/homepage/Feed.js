@@ -10,6 +10,7 @@ import {
   receiveItems,
   catchError,
   PaginateItems,
+  getLastPurchaseId,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -26,6 +27,8 @@ export const Feed = () => {
     return state.feed;
   });
 
+  const purchaseTracker = useSelector((state) => state.purchases.idOfLastOrder);
+  console.log(purchaseTracker);
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
 
@@ -37,14 +40,12 @@ export const Feed = () => {
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveItems(json));
-        if (pages === undefined) {
-          dispatch(PaginateItems(json.items));
-        }
+        dispatch(PaginateItems(json.items));
       })
       .catch((err) => {
         dispatch(catchError(err));
       });
-  }, []);
+  }, [purchaseTracker]);
 
   if (status === "error") {
     return (

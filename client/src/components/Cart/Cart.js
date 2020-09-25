@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { COLORS } from "../styles/Colors";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { clearCart } from "../../actions";
+import { clearCart, getLastPurchaseId } from "../../actions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
@@ -111,7 +111,7 @@ const Cart = () => {
                 setStatus("idle");
                 setValidationData(data);
                 dispatch(clearCart());
-                console.log(data);
+                dispatch(getLastPurchaseId(data.order.orderId));
               })
               .catch((err) => {
                 setStatus("idle");

@@ -41,3 +41,8 @@ export const catchError = (err) => ({
   type: "CATCH_ERROR",
   err,
 });
+
+export const getLastPurchaseId = (uuid) => ({
+  type: "GET_LAST_PURCHASE_ID",
+  uuid,
+});

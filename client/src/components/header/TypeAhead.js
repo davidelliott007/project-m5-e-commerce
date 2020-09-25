@@ -59,8 +59,17 @@ const TypeAhead = ({ isOpen, setIsOpen }) => {
               let indexToSlice = indexOfSearch;
               let firstSlice = item.name.slice(0, indexToSlice);
               let secondSlice = item.name.slice(indexToSlice);
+              // const isSelected = selectedSuggestionIndex === index;
               return (
-                <SearchResult key={item._id + index}>
+                <SearchResult
+                  key={item._id + index}
+                  // onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                  // style={{
+                  //   background: isSelected
+                  //     ? "hsla(50deg, 100%, 80%, 0.25)"
+                  //     : "transparent",
+                  // }}
+                >
                   <ItemsPrediction
                     to={`/items/${item._id}`}
                     onClick={() => setIsOpen(false)}
@@ -82,15 +91,10 @@ const TypeAhead = ({ isOpen, setIsOpen }) => {
 export default TypeAhead;
 
 const Wrapper = styled.div`
-  /* transition: max-height 0.4s ease-in-out; */
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   z-index: 300;
-  /* max-height: ${(props) => {
-    return props.maxHeight;
-  }}; */
-  /* overflow: hidden; */
   display: flex;
   justify-content: center;
   align-items: center;
