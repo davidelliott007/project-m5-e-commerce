@@ -1,6 +1,6 @@
 import produce from "immer";
 
-const initialState = { items: [], status: "idle" };
+const initialState = { items: [], status: "idle", filter: null };
 
 export default function feedReducer(state = initialState, action) {
   switch (action.type) {
@@ -47,6 +47,13 @@ export default function feedReducer(state = initialState, action) {
     case "CATCH_ERROR": {
       return produce(state, (draftState) => {
         draftState.status = "error";
+        return draftState;
+      });
+    }
+
+    case "UPDATE_FILTER": {
+      return produce(state, (draftState) => {
+        draftState.filter = action.bodyPart;
         return draftState;
       });
     }

@@ -46,3 +46,8 @@ export const getLastPurchaseId = (uuid) => ({
   type: "GET_LAST_PURCHASE_ID",
   uuid,
 });
+
+export const updateFilter = (bodyPart) => ({
+  type: "UPDATE_FILTER",
+  bodyPart,
+});

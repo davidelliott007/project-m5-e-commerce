@@ -2,39 +2,33 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/Colors";
 import { useSelector, useDispatch } from "react-redux";
-import { PaginateItems, updatePageToView } from "../../actions";
+import { updatePageToView, PaginateItems, updateFilter } from "../../actions";
+import { FilteredItemsByBody } from "../../filterHelpers";
 
 export const InputForm = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => {
     return state.feed.items.items;
   });
-
-  const FilterFunction = (BodyPart) => {
-    if (BodyPart === "all") {
-      return items;
-    }
-    return items.filter((item) => {
-      if (item.body_location === BodyPart) {
-        return true;
-      }
-    });
-  };
-
+  let filter = useSelector((state) => state.feed.filter);
+  if (filter === null) {
+    filter = undefined;
+  }
   return (
     <Wrapper>
       <Label for="bodyPart">Choose a body part!</Label>
       <Select
         id="bodyPart"
         name="bodyPart"
+        value={filter}
         onChange={(ev) => {
           let selectedBodyPart = ev.target.value;
-          let newItems = FilterFunction(selectedBodyPart);
+          dispatch(updateFilter(selectedBodyPart));
+          dispatch(PaginateItems(FilteredItemsByBody(selectedBodyPart, items)));
           dispatch(updatePageToView(0));
-          dispatch(PaginateItems(newItems));
         }}
       >
-        <Option value="all">Select an Option</Option>
+        <Option value="default">Select an Option</Option>
         <Option value="all">All Body Parts</Option>
         <Option value="Wrist">Wrist</Option>
         <Option value="Arms">Arms</Option>
