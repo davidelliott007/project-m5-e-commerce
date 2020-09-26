@@ -10,7 +10,6 @@ import {
   receiveItems,
   catchError,
   PaginateItems,
-  getLastPurchaseId,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -30,7 +29,6 @@ export const Feed = () => {
 
   const currentFilter = data.filter;
   const purchaseTracker = useSelector((state) => state.purchases.idOfLastOrder);
-  console.log(purchaseTracker);
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
 
