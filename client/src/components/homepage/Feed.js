@@ -10,7 +10,6 @@ import {
   receiveItems,
   catchError,
   PaginateItems,
-  getLastPurchaseId,
 } from "../../actions";
 
 import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
@@ -18,6 +17,7 @@ import { getPages, getPageNumber } from "../../reducers/FeedReducer.js";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import FiveHundred from "../errrorPage/FiveHundred";
+import { FilteredItemsByBody } from "../../filterHelpers";
 
 export const Feed = () => {
   const dispatch = useDispatch();
@@ -27,8 +27,8 @@ export const Feed = () => {
     return state.feed;
   });
 
+  const currentFilter = data.filter;
   const purchaseTracker = useSelector((state) => state.purchases.idOfLastOrder);
-  console.log(purchaseTracker);
   const pages = useSelector(getPages);
   const pageNumber = useSelector(getPageNumber);
 
@@ -40,6 +40,12 @@ export const Feed = () => {
       .then((res) => res.json())
       .then((json) => {
         dispatch(receiveItems(json));
+        if (currentFilter !== null) {
+          dispatch(
+            PaginateItems(FilteredItemsByBody(currentFilter, json.items))
+          );
+          return;
+        }
         dispatch(PaginateItems(json.items));
       })
       .catch((err) => {
@@ -55,7 +61,7 @@ export const Feed = () => {
     );
   }
 
-  if (!data.pages) {
+  if (!data.pages || status === "loading") {
     return (
       <div style={{ marginTop: "50px" }}>
         {/* Loading Style */}
